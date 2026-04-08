@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 
 export default class User{
 
@@ -7,11 +6,6 @@ export default class User{
         this.username = username;
         this.email = email;
         this.bio = bio;
-    }
-
-    static create ({username, email, bio}){
-        const id = uuidv4();
-        return new User(id, username, email, bio);
     }
 
     // Getters

@@ -5,8 +5,8 @@ export default class UserService {
     this.userRepo = userRepo;
   }
 
-  async createUser({ username, email, bio }) {
-    const user = User.create({ username, email, bio });
+  async createUser({ userId,username, email, bio }) {
+    const user = new User(userId, username, email, bio);
     const savedUser = await this.userRepo.createUser(user);
     return savedUser;
   }
