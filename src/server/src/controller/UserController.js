@@ -5,8 +5,8 @@ export default class UserController{
 
     createUser = async (req, res) => {
         try {
-            const { username, email, bio } = req.body;
-            const user = await this.userService.createUser({ username, email, bio });
+            const { userId,username, email, bio } = req.body;
+            const user = await this.userService.createUser({ userId, username, email, bio });
             res.status(201).json(user);
         } catch (err) {
             res.status(500).json({ error: err.message });
