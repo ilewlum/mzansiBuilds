@@ -1,0 +1,183 @@
+.login-root {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: rgba(208, 240, 192, 0.853);
+  overflow: hidden;
+}
+
+/* Card */
+.login-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  min-height: 450px;
+  padding: 52px 56px 44px;
+
+  background-color: rgba(247, 247, 247, 0.853);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--card-border);
+  border-radius: 28px;
+
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.12),
+              0 4px 12px rgba(0, 0, 0, 0.08);
+
+  animation: cardIn 0.55s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+/* Form layout */
+.details {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10%;
+}
+
+.field-label {
+  padding-top: 10px;
+}
+
+.field-input {
+  margin-top: 5px;
+  padding-top: 5px;
+
+  border: 1px solid #ccc;
+  border-radius: 10px;
+
+  outline: none;
+  box-shadow: none;
+}
+
+/* Brand / Title */
+.brand {
+  margin-bottom: 6px;
+
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  color: var(--accent);
+}
+
+.page-title {
+  margin-top: 10px;
+  margin-bottom: 36px;
+
+  font-family: 'Syne', sans-serif;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+
+  color: var(--ink);
+}
+
+/* Forgot link */
+.forgot {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 20px;
+
+  text-align: right;
+  font-size: 13px;
+  color: var(--ink-muted);
+  text-decoration: underline;
+
+  cursor: pointer;
+}
+
+/* Buttons */
+.btn {
+  width: 30%;
+  min-height: 30px;
+
+  border: 1px solid #ccc;
+  border-radius: 15px;
+
+  background-color: rgba(208, 240, 192, 0.853);
+
+  outline: none;
+  box-shadow: none;
+}
+
+.btn:hover {
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.btn-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+/* Social section */
+.social-divider {
+  position: relative;
+  margin-bottom: 20px;
+
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: var(--ink-muted);
+}
+
+.social-divider::before,
+.social-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+
+  width: 38%;
+  height: 1px;
+
+  background: var(--card-border);
+}
+
+.social-divider::before {
+  left: 0;
+}
+
+.social-divider::after {
+  right: 0;
+}
+
+.social-row {
+  display: flex;
+  gap: 14px;
+}
+
+.social-btn {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 11px;
+
+  border: 1.5px solid var(--card-border);
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, 0.85);
+
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-soft);
+
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.social-btn:hover {
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
