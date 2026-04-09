@@ -1,3 +1,5 @@
+// Service layer for user-related operations, handling business logic and interactions with the UserRepository.
+
 import User from "../model/User.js";
 
 export default class UserService {
@@ -5,27 +7,33 @@ export default class UserService {
     this.userRepo = userRepo;
   }
 
+  // Creates a new user with the provided details and saves it to the repository.
   async createUser({ userId,username, email, bio }) {
+    console.log("Service - Creating user:", { userId, username, email, bio });
     const user = new User(userId, username, email, bio);
     const savedUser = await this.userRepo.createUser(user);
     return savedUser;
   }
 
+  // Updates an existing user's details based on the provided information and saves the changes to the repository.
   async updateUser({ userId,username, email, bio }) {
     const savedUser = await this.userRepo.updateUser({ userId, username, email, bio});
     return savedUser;
   }
 
+  // Retrieves a user by their unique identifier from the repository.
   async getUserById(userId){
     const user = await this.userRepo.getUserById(userId);
     return user;
   }
 
+  // Retrieves all users from the repository.
   async getAllUsers(){
     const users = await this.userRepo.getAllUsers();
     return users;
   }
 
+  // Deletes a user by their unique identifier from the repository and returns the deleted user.
   async deleteUser(userId) {
     const user = await this.userRepo.deleteUser(userId);
     return user;
