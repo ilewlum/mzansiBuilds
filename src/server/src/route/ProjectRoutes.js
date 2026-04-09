@@ -1,7 +1,9 @@
+// Route definitions for Project-related endpoints
+
 import express from "express";
 import ProjectController from "../controller/ProjectController.js";
 import ProjectService from "../service/ProjectService.js";
-import ProjectRepo from "../Repository/ProjectRepo.js";
+import ProjectRepo from "../repository/ProjectRepo.js";
 import supabase from "../config/supabaseClient.js";
 
 const router = express.Router();

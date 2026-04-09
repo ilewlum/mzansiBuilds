@@ -1,0 +1,301 @@
+/* OnboardingModal stylesheet */
+ 
+/* Backdrop — full-screen overlay, sits above the feed */
+.ob-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  backdrop-filter: blur(2px);
+}
+ 
+/* Modal card */
+.ob-modal {
+  position: relative;
+  background: white;
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  box-shadow: 0 28px 48px rgba(0, 0, 0, 0.18),
+              0 6px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 440px;
+  overflow: hidden;
+  animation: ob-rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+ 
+@keyframes ob-rise {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+ 
+/* Close button */
+.ob-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--card-border);
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--ink-muted);
+  transition: background 0.15s, color 0.15s;
+  z-index: 1;
+}
+
+/* Hover effect for close button */
+.ob-close-btn:hover {
+  background: var(--sage);
+  color: var(--ink);
+}
+ 
+/* ── Header ── */
+.ob-header {
+  background: var(--sage);
+  padding: 28px 28px 20px;
+  border-bottom: 1px solid var(--card-border);
+  text-align: center;
+}
+ 
+/* Avatar preview circle */
+.ob-avatar-preview {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent, #3a7d44);
+  color: white;
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  border: 2.5px solid var(--sage-dark);
+  transition: background 0.2s;
+}
+ 
+/* Header text */
+.ob-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  color: var(--ink);
+  margin-bottom: 4px;
+  line-height: 1.25;
+}
+ 
+/* Subtitle text */
+.ob-subtitle {
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+ 
+/* ── Exit warning banner ── */
+.ob-warn-box {
+  background: #fff8f0;
+  border-bottom: 1.5px solid #f0bfa0;
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: ob-warn-in 0.25s ease both;
+}
+ 
+/* Warning banner animation */
+@keyframes ob-warn-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: none; }
+}
+ 
+/* Warning title */
+.ob-warn-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #7a3000;
+  text-align: center;
+}
+ 
+/* Warning description text */
+.ob-warn-text {
+  font-size: 13px;
+  color: #a04010;
+  line-height: 1.55;
+  text-align: center;
+}
+ 
+/* Warning action buttons container */
+.ob-warn-actions {
+  display: flex;
+  gap: 10px;
+}
+ 
+/* Back button in warning banner */
+.ob-warn-back {
+  flex: 1;
+  padding: 9px;
+  border-radius: 8px;
+  border: 1.5px solid #f0bfa0;
+  background: #fff4ec;
+  color: #7a3000;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+/* Hover effect for back button */
+.ob-warn-back:hover { background: #ffe8d6; }
+ 
+/* Logout button in warning banner */
+.ob-warn-logout {
+  flex: 1;
+  padding: 9px;
+  border-radius: 8px;
+  border: none;
+  background: #e24b4a;
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+/* Hover effect for logout button */
+.ob-warn-logout:hover  { background: #c43b3a; }
+
+/* Disabled state for logout button */
+.ob-warn-logout:disabled { background: #ccc; cursor: not-allowed; }
+ 
+/* ── Body / form ── */
+.ob-body {
+  padding: 24px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+ 
+/* Form field container */
+.ob-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+ 
+/* Form field labels */
+.ob-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+ 
+/* Input and textarea styles */
+.ob-field input,
+
+/* Shared styles for input and textarea */
+.ob-field textarea {
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-sm, 8px);
+  padding: 10px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--sage);
+  transition: border-color 0.18s, box-shadow 0.18s;
+  outline: none;
+  resize: none;
+}
+ 
+/* Focus state for inputs and textareas */
+.ob-field input:focus,
+.ob-field textarea:focus {
+  border-color: var(--sage-dark);
+  box-shadow: 0 0 0 3px rgba(122, 172, 106, 0.2);
+}
+ 
+/* Error state for inputs */
+.ob-field input.error {
+  border-color: #e24b4a;
+  box-shadow: 0 0 0 3px rgba(226, 75, 74, 0.15);
+}
+ 
+/* Footer of each form field, contains hints and counters */
+.ob-field-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+ 
+/* Hints below form fields */
+.ob-hint {
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+ 
+/* Error hints */
+.ob-hint--error {
+  color: #e24b4a;
+}
+ 
+/* Character counters for inputs */
+.ob-counter {
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+ 
+/* Save error */
+.ob-save-error {
+  font-size: 13px;
+  color: #e24b4a;
+  background: #fff0f0;
+  border: 1px solid #f7c1c1;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+ 
+/* Save button */
+.ob-save-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--accent, #3a7d44);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+ 
+.ob-save-btn:hover:not(:disabled) {
+  background: #2d6636;
+  transform: translateY(-1px);
+}
+ 
+.ob-save-btn:disabled {
+  background: var(--sage-mid);
+  color: #aaa;
+  cursor: not-allowed;
+  transform: none;
+}
+ 
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .ob-backdrop { padding: 12px; align-items: flex-end; }
+  .ob-modal { border-bottom-left-radius: 0; border-bottom-right-radius: 0; max-width: 100%; }
+}

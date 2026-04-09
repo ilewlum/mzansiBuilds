@@ -1,8 +1,12 @@
+// Project model class, represents a project in the system with properties like projectId, userId, 
+// title, description, stage, visibility, techStack, status, createdAt, and support.
+// It includes getters and setters for each property, as well as a toJSON method for easy serialization.
+
 import { v4 as uuidv4 } from 'uuid';
 
 export default class Project{
 
-    constructor (projectId , userId, title, description, techStack, createdAt,visibility,stage, status){
+    constructor (projectId , userId, title, description, techStack, createdAt,visibility,stage, status, support){
         this.projectId = projectId;
         this.userId = userId;
         this.title = title;
@@ -12,11 +16,12 @@ export default class Project{
         this.techStack = techStack;
         this.status = status;
         this.createdAt = createdAt;
+        this.support = support;
     }
 
-    static createProject({userId, title, description, stage, visibility,techStack, status, createdAt }) {
+    static createProject({userId, title, description, stage, visibility,techStack, status, createdAt,support }) {
         const projectId = uuidv4();
-        return new Project(projectId, userId, title, description, techStack, createdAt, visibility, stage, status);
+        return new Project(projectId, userId, title, description, techStack, createdAt, visibility, stage, status, support);
     }
 
     // Getters
@@ -50,6 +55,10 @@ export default class Project{
 
     get status() {
         return this._status;
+    }
+
+    get support() {
+        return this._support;
     }
 
     get createdAt() {
@@ -88,6 +97,14 @@ export default class Project{
 
     set status(value) {
         this._status = value;
+    }
+
+    set status(value) {
+        this._status = value;
+    }
+
+    set support(value) {
+        this._support = value;
     }
 
     set createdAt(value) {

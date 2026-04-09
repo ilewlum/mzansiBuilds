@@ -1,3 +1,5 @@
+// Supabase client configuration and initialization
+
 import {createClient } from '@supabase/supabase-js'
 import dotenv from 'dotenv'
 

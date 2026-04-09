@@ -1,13 +1,17 @@
+// Controller layer for project-related operations, handling HTTP requests and responses,
+// and delegating business logic to the ProjectService.
+
 import Project from "../model/Project.js";
 export default class ProjectController{
     constructor(projectService){
         this.projectService = projectService;
     }
 
+    // Creates a new project with the provided details and sends the created project as a JSON response with a 201 status code.
     createProject = async (req, res) => {
         try {
             const { userId, title, description, stage, visibility, techStack, status, createdAt } = req.body;
-            const newProject = Project.createProject({ userId, title, description, stage, visibility, techStack, status, createdAt });
+            const newProject = Project.createProject({ userId, title, description, stage, visibility, techStack, status, createdAt,support });
             const project = await this.projectService.createProject(newProject.toJSON());
             res.status(201).json(project);
         } catch (err) {
@@ -15,10 +19,11 @@ export default class ProjectController{
         }
     };
 
+    // Updates an existing project's details based on the provided information and sends the updated project as a JSON response.
     updateProject = async (req, res) => {
         try {
             const { id } = req.params;
-            const { title, description, stage, visibility, techStack, status } = req.body;
+            const { title, description, stage, visibility, techStack, status, support } = req.body;
 
             const project = await this.projectService.updateProject({
                 projectId: id,
@@ -27,7 +32,8 @@ export default class ProjectController{
                 stage,
                 visibility,
                 techStack,
-                status
+                status,
+                support
             });
 
             res.json(project);
@@ -36,6 +42,7 @@ export default class ProjectController{
         }
     };
 
+    // Retrieves a project by its unique identifier and sends the project as a JSON response.
     getProjectById = async (req, res) => {
         try {
             const { id } = req.params;
@@ -46,6 +53,7 @@ export default class ProjectController{
         }
     };
 
+    // Retrieves all projects associated with a specific user identifier and sends them as a JSON response.
     getProjectByUserId = async (req, res) => {
         try {
             const { id } = req.params;
@@ -56,6 +64,7 @@ export default class ProjectController{
         }
     };
 
+    // Retrieves all public projects and sends them as a JSON response.
     getAllPublicProjects = async (req, res) => {
         try {
             const projects = await this.projectService.getAllPublicProjects();
@@ -65,6 +74,7 @@ export default class ProjectController{
         }
     };
 
+    // Deletes a project by its unique identifier and sends a 204 No Content response if successful.
     deleteProject = async (req, res) => {
         try {
             const { id } = req.params;

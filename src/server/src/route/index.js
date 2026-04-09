@@ -1,5 +1,7 @@
+// Main route file that aggregates all individual route modules
+
 import userRoutes from "./UserRoutes.js";
-import projectRoutes from "./ControllerRoutes.js";
+import projectRoutes from "./ProjectRoutes.js";
 
 export default function routes(app) {
   app.use("/users", userRoutes);
