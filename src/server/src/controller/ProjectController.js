@@ -10,11 +10,12 @@ export default class ProjectController{
     // Creates a new project with the provided details and sends the created project as a JSON response with a 201 status code.
     createProject = async (req, res) => {
         try {
-            const { userId, title, description, stage, visibility, techStack, status, createdAt } = req.body;
-            const newProject = Project.createProject({ userId, title, description, stage, visibility, techStack, status, createdAt,support });
+            const { userId, title, description, stage, visibility, techStack, status, support, createdAt } = req.body;
+            const newProject = Project.createProject({ userId, title, description, support ,techStack , stage, visibility, status, createdAt});
             const project = await this.projectService.createProject(newProject.toJSON());
             res.status(201).json(project);
         } catch (err) {
+            console.log(err)
             res.status(500).json({ error: err.message });
         }
     };

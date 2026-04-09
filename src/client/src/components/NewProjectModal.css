@@ -3,17 +3,17 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(30,42,26,0.45);
-  backdrop-filter: blur(4px);
-  z-index: 200;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 0.2s ease;
+  padding: 24px;
+  backdrop-filter: blur(2px);
 }
 
 .modal {
-  background: var(--white);
+  background: white;
   border-radius: 24px;
   padding: 36px;
   width: 480px;
@@ -34,9 +34,9 @@
 .modal-input,
 .modal-textarea {
   width: 100%;
-  background: var(--sage);
+  background: rgb(246, 246, 246);
   border: 1.5px solid var(--card-border);
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   padding: 10px 14px;
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
@@ -58,7 +58,7 @@
 .modal-cancel {
   flex: 1;
   padding: 11px;
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   border: 1.5px solid var(--card-border);
   background: transparent;
   font-family: 'DM Sans', sans-serif;
@@ -68,12 +68,12 @@
   cursor: pointer;
   transition: background 0.18s;
 }
-.modal-cancel:hover { background: var(--sage); }
+.modal-cancel:hover { background: rgb(246, 246, 246); }
 
 .modal-submit {
   flex: 2;
   padding: 11px;
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   border: none;
   background: var(--accent);
   color: var(--white);
@@ -81,7 +81,6 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(58,125,68,0.28);
   transition: background 0.18s;
 }
-.modal-submit:hover { background: var(--accent-light); }
+.modal-submit:hover { background: rgb(246, 246, 246); }
