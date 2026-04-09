@@ -1,0 +1,86 @@
+/* ─── NewProjectModal.css ───────────────────────────────────────────────────── */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  backdrop-filter: blur(2px);
+}
+
+.modal {
+  background: white;
+  border-radius: 24px;
+  padding: 36px;
+  width: 480px;
+  box-shadow: 0 24px 80px rgba(30,42,26,0.22);
+  animation: cardIn 0.3s cubic-bezier(.22,1,.36,1) both;
+}
+
+.modal-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 22px;
+}
+
+.modal-field { margin-bottom: 16px; }
+
+.modal-input,
+.modal-textarea {
+  width: 100%;
+  background: rgb(246, 246, 246);
+  border: 1.5px solid var(--card-border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+}
+
+.modal-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.modal-cancel {
+  flex: 1;
+  padding: 11px;
+  border-radius: 10px;
+  border: 1.5px solid var(--card-border);
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.modal-cancel:hover { background: rgb(246, 246, 246); }
+
+.modal-submit {
+  flex: 2;
+  padding: 11px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.modal-submit:hover { background: rgb(246, 246, 246); }

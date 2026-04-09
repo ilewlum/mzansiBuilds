@@ -1,18 +1,24 @@
+// Controller layer for user-related operations, handling HTTP requests and responses, 
+// and delegating business logic to the UserService.
+
 export default class UserController{
     constructor(userService){
         this.userService = userService;
     }
 
+    // Creates a new user with the provided details and sends the created user as a JSON response with a 201 status code.
     createUser = async (req, res) => {
         try {
-            const { username, email, bio } = req.body;
-            const user = await this.userService.createUser({ username, email, bio });
+            const { userId,username, email, bio } = req.body;
+            console.log("Controller - Creating user:", { userId, username, email, bio });
+            const user = await this.userService.createUser({ userId, username, email, bio });
             res.status(201).json(user);
         } catch (err) {
             res.status(500).json({ error: err.message });
         }
     };
 
+    // Updates an existing user's details based on the provided information and sends the updated user as a JSON response.
     updateUser = async (req, res) => {
         try {
             const { id } = req.params;
@@ -31,6 +37,7 @@ export default class UserController{
         }
     };
 
+    // Retrieves a user by their unique identifier and sends the user as a JSON response.
     getUserById = async (req, res) => {
         try {
             const { id } = req.params;
@@ -41,6 +48,7 @@ export default class UserController{
         }
     };
 
+    // Retrieves all users and sends them as a JSON response.
     getAllUsers = async (req, res) => {
         try {
             const users = await this.userService.getAllUsers();
@@ -50,6 +58,7 @@ export default class UserController{
         }
     };  
 
+    // Deletes a user by their unique identifier and sends a 204 No Content response if successful.
     deleteUser = async (req, res) => {
         try {
             const { id } = req.params;

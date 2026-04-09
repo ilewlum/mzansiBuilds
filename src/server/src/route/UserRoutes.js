@@ -1,3 +1,5 @@
+// Route definitions for User-related endpoints
+
 import express from "express";
 import UserController from "../controller/UserController.js";
 import UserService from "../service/UserService.js";
