@@ -18,8 +18,7 @@ export default class ProjectRepo {
                 visibility: project.visibility,
                 techStack: project.techStack,
                 status: project.status,
-                support: project.support,
-                createdAt: project.createdAt
+                support: project.support
                 }])
             .select()
             .single();
@@ -54,7 +53,18 @@ export default class ProjectRepo {
             .from("projects")
             .select("projectId, title, description, stage, visibility, techStack,status,support, users(username) ")
             .eq("visibility", "PUBLIC")
-            .eq("status", "ACTIVE");  
+            .order("createdAt", { ascending: false }); 
+        if (error) throw error;
+        return data;
+    }
+
+    async findCompleted(){
+        const { data, error } = await this.supabase            
+            .from("projects")
+            .select("projectId, title, description, stage, visibility, techStack,status,support, users(username) ")
+            .eq("visibility", "PUBLIC")
+            .eq("status", "COMPLETE")
+            .order("createdAt", { ascending: false }); 
         if (error) throw error;
         return data;
     }

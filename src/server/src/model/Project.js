@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default class Project{
 
-    constructor (projectId , userId, title, description, techStack, createdAt,visibility,stage, status, support){
+    constructor (projectId , userId, title, description, techStack, createdAt, visibility, stage, status, support){
         this.projectId = projectId;
         this.userId = userId;
         this.title = title;
@@ -19,7 +19,7 @@ export default class Project{
         this.support = support;
     }
 
-    static createProject({userId, title, description, stage, visibility,techStack, status, createdAt,support }) {
+    static createProject({userId, title, description, support ,techStack , stage, visibility, status, createdAt }) {
         const projectId = uuidv4();
         return new Project(projectId, userId, title, description, techStack, createdAt, visibility, stage, status, support);
     }
@@ -99,10 +99,6 @@ export default class Project{
         this._status = value;
     }
 
-    set status(value) {
-        this._status = value;
-    }
-
     set support(value) {
         this._support = value;
     }
@@ -121,6 +117,7 @@ export default class Project{
             visibility: this._visibility,
             techStack: this._techStack,
             status: this._status,
+            support: this._support,
             createdAt: this._createdAt
         };
     }

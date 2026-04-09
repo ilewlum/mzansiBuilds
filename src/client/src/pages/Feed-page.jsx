@@ -1,25 +1,30 @@
 // Main feed page displaying user profile, project posts, and celebration wall
 import "./Feed-page.css";
 import { useEffect, useState } from "react";
-import { getProjects } from "../services/project-api";
+import { getProjects, addProject} from "../services/project-api";
 import {findUserProfile, getCurrentUser} from "../services/user-api";
 import OnboardingModal from "../components/OnBoardingModal";
+import NewProjectModal from "../components/NewProjectModal";
 import { useUser } from "../context/UserContext";
-
-
+ 
+ 
 export default function FeedPage() {
     const [projects, setProjects] = useState([]);
     const [needsOnboarding, setNeedsOnboarding] = useState(false);
-    const [checking, setChecking] = useState(true); // prevents feed flash before check completes
+    const [showNewProjectModal, setShowNewProjectModal] = useState(false);
+    const [checking, setChecking] = useState(true);
     const { userProfile, loadingProfile, refreshProfile } = useUser();
 
+    const completedProjects = projects.filter(item => item.status ==="COMPLETE");
+    const activeProjects = projects.filter(item => item.status ==="ACTIVE");
+ 
     // Check if user needs onboarding on mount
     useEffect(() => {
         async function checkOnboarding() {
             try {
                 const { userId } = await getCurrentUser();
                 if (!userId) return;
-
+ 
                 await findUserProfile(userId);
                 setNeedsOnboarding(false);
             } catch {
@@ -30,19 +35,30 @@ export default function FeedPage() {
         }
         checkOnboarding();
     }, []);
-
+ 
     // Handler for when onboarding is complete - refreshes profile data to update UI
     async function handleOnboardingComplete() {
         await refreshProfile(); // ← updates context, navbar and all pages re-render
         setNeedsOnboarding(false);
     }
-
+ 
+    async function handleNewProject(form) {
+        try {
+            console.log(" feed-page-level: ",form.title, userProfile.userId, form.description, form.support, form.stack, form.stage, form.visibility, form.status);
+            await addProject(userProfile.userId ,form.title, form.description, form.support, form.stack, form.stage, form.visibility, form.status);
+            const updatedProjects = await getProjects();
+            setProjects(updatedProjects);
+        } catch(error) {
+            console.error("Error adding project:", error);
+        }
+    }
+    
     // Load projects for feed display
     useEffect(() => {
         async function loadProjects() {
             try{
                 const response = await getProjects();
-                console.log(projects);
+                
                 setProjects(response);
             }
             catch(error){
@@ -51,18 +67,21 @@ export default function FeedPage() {
         }
         loadProjects();
     }, []);
-
+ 
     // Show nothing while checking onboarding status or loading profile to prevent UI flash
     if (checking || loadingProfile) return null;
     return (  
         <>
+        {showNewProjectModal && 
+            // FIX: prop renamed from handleNewProject to onSubmit to match NewProjectModal's expected prop
+            <NewProjectModal onClose={() => setShowNewProjectModal(false)} onSubmit={handleNewProject}/>}
         {needsOnboarding && (
             <OnboardingModal onComplete={handleOnboardingComplete} />
         )}
             {/* main page*/}        
             <div className="feed-page">
                 <div className="feed-grid">
-
+ 
                     {/* LEFT –  sticky user profile card */}
                     <aside className="panel-left">
                         <div className="profile-card">
@@ -77,17 +96,23 @@ export default function FeedPage() {
                             <hr className="divider" />
                         </div>
                     </aside>
-
+ 
                     <main className="panel-mid">
                         {/* New Project bar */}
                         <div className="new-project-card">
                             <div className="avatar sm">{avatarHelper(userProfile?.username)}</div>
-                            <div className="new-project-input">Start a new project…</div>
-                            <button className="btn btn-primary new-btn">New Project</button>
+                            <div className="new-project-input">
+                                Start a new project…
+                            </div>
+                            <button 
+                                className="btn btn-primary new-btn"
+                                onClick={() => setShowNewProjectModal(true)}
+                                >New Project
+                            </button>
                         </div>
-
+ 
                         {/* Post cards */}
-                        {projects.map(
+                        {activeProjects.map(
                             (item, i)=>  
                                 (
                                     <div className="post-card" key={item.projectId} style={{ animationDelay: `${0.1 + i * 0.07}s` }}>
@@ -111,13 +136,13 @@ export default function FeedPage() {
                                 )       
                         )}
                     </main>
-
+ 
                     {/* RIGHT – sticky celebration wall */}
                     <aside className="panel-right">
                         <div className="celebration-card">
                             <div className="celebration-title">Celebration Wall</div>
                             <hr className="divider" />
-                            {projects.map((item, i) => (
+                            {completedProjects.map((item, i) => (
                                 <div className="celebration-item" key={item.projectId} style={{ animationDelay: `${0.1 + i * 0.07}s` }}>
                                     <div className="cel-avatar">{avatarHelper(item.users.username)}</div>
                                     <div className="cel-info">
@@ -133,7 +158,7 @@ export default function FeedPage() {
         </>
     );
 }
-
+ 
 function avatarHelper(str) {
   return str ? str[0] : "";
 }
