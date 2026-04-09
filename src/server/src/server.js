@@ -15,9 +15,6 @@ app.use(express.json())
 // mount routes
 routes(app)
 
-// mount routes
-routes(app)
-
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
