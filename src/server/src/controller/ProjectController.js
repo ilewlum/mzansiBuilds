@@ -25,7 +25,6 @@ export default class ProjectController{
         try {
             const { id } = req.params;
             const { title, description, stage, visibility, techStack, status, support } = req.body;
-
             const project = await this.projectService.updateProject({
                 projectId: id,
                 title,

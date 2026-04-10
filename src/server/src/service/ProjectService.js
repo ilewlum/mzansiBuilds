@@ -41,6 +41,7 @@ export default class ProjectService {
   // Retrieves all public projects from the repository.
   async getAllPublicProjects() {
     const projects = await this.projectRepo.getPublic();
+    console.log(projects);
     return projects;
   }
 
