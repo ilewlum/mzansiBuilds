@@ -19,6 +19,7 @@ export async function addProject(userId, title, description,support, techStack, 
     if (!response.ok) throw new Error("Failed to save project");
     const result = await response.json();
     console.log("Project added:", result);
+    return result;
   } catch (error) {
     console.error("Error adding project:", error);
     throw error;

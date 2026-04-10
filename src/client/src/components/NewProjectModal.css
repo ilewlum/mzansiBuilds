@@ -1,9 +1,8 @@
-/* ─── NewProjectModal.css ───────────────────────────────────────────────────── */
-
+/* ─── Overlay ────────────────────────────────────────────────────────────────── */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: 99999;
   background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
@@ -11,16 +10,19 @@
   padding: 24px;
   backdrop-filter: blur(2px);
 }
-
+ 
 .modal {
   background: white;
   border-radius: 24px;
   padding: 36px;
   width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
   box-shadow: 0 24px 80px rgba(30,42,26,0.22);
   animation: cardIn 0.3s cubic-bezier(.22,1,.36,1) both;
 }
-
+ 
+/* ─── Modal title ────────────────────────────────────────────────────────────── */
 .modal-title {
   font-family: 'Syne', sans-serif;
   font-size: 22px;
@@ -28,9 +30,23 @@
   color: var(--ink);
   margin-bottom: 22px;
 }
-
+ 
+/* ─── Fields ─────────────────────────────────────────────────────────────────── */
 .modal-field { margin-bottom: 16px; }
-
+ 
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+ 
 .modal-input,
 .modal-textarea {
   width: 100%;
@@ -42,25 +58,27 @@
   font-size: 14px;
   color: var(--ink);
   outline: none;
+  box-sizing: border-box;
 }
-
+ 
 .modal-textarea {
   min-height: 80px;
   resize: vertical;
 }
-
+ 
+/* ─── Actions ────────────────────────────────────────────────────────────────── */
 .modal-actions {
   display: flex;
   gap: 10px;
   margin-top: 24px;
 }
-
+ 
 .modal-cancel {
   flex: 1;
   padding: 11px;
   border-radius: 10px;
   border: 1.5px solid var(--card-border);
-  background: transparent;
+  background: rgb(226, 225, 225);
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -69,18 +87,152 @@
   transition: background 0.18s;
 }
 .modal-cancel:hover { background: rgb(246, 246, 246); }
-
+ 
 .modal-submit {
   flex: 2;
   padding: 11px;
   border-radius: 10px;
   border: none;
-  background: var(--accent);
+  background: rgb(226, 225, 225);
   color: var(--white);
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.18s;
+  transition: opacity 0.18s;
 }
-.modal-submit:hover { background: rgb(246, 246, 246); }
+.modal-submit:hover { opacity: 0.88; }
+ 
+/* ─── Milestones ─────────────────────────────────────────────────────────────── */
+ 
+/* Counter badge next to the label */
+.milestone-counter {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #4a7a5a;
+  background: #e4f2e9;
+  border-radius: 20px;
+  padding: 1px 7px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+ 
+/* List of saved milestones */
+.milestone-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+ 
+.milestone-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: #f0f7f2;
+  border: 1.5px solid #c3dfc8;
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+ 
+.milestone-chip-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2a5c3a;
+}
+ 
+.milestone-chip-message {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  color: #4a7a5a;
+  line-height: 1.4;
+}
+ 
+/* Dashed "Add milestone" trigger button */
+.milestone-add-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1.5px dashed var(--card-border, #d0d0d0);
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.milestone-add-trigger:hover {
+  background: rgb(246, 246, 246);
+  border-color: #aaa;
+}
+ 
+.milestone-plus {
+  font-size: 16px;
+  line-height: 1;
+}
+ 
+/* Inline form container */
+.milestone-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgb(246, 246, 246);
+  border: 1.5px solid var(--card-border, #e0e0e0);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 8px;
+}
+ 
+/* Slightly shorter textarea inside the milestone form */
+.milestone-textarea {
+  min-height: 64px !important;
+}
+ 
+/* Row of Cancel / Add buttons inside the form */
+.milestone-form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+ 
+.milestone-cancel {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--card-border, #ddd);
+  background: white;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.milestone-cancel:hover:not(:disabled) { background: rgb(246, 246, 246); }
+.milestone-cancel:disabled { opacity: 0.5; cursor: not-allowed; }
+ 
+.milestone-add {
+  padding: 7px 18px;
+  border-radius: 8px;
+  border: none;
+  background: #3a7a50;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.milestone-add:hover:not(:disabled) { opacity: 0.88; }
+.milestone-add:disabled {
+  background: #c0d4c6;
+  cursor: not-allowed;
+}
