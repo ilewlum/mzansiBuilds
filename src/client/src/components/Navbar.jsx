@@ -12,7 +12,7 @@ export default function Navbar()
             {/* <Link to="/" className="navbar-brand">login</Link>*/}
             <div className="brand">MzansiBuilds</div>
             <button className="nav-btn">
-                <FaHome />Home
+                <FaHome />Feed
             </button>
             <button className="nav-btn">
                 <FaFolder />Projects
