@@ -3,6 +3,7 @@ import "./Feed-page.css";
 import { useEffect, useState } from "react";
 import { getProjects, addProject} from "../services/project-api";
 import { addComment, updateComment, deleteComment} from "../services/comment-api";
+import { addCollaboration } from "../services/collaboration-api";
 import {findUserProfile, getCurrentUser} from "../services/user-api";
 import OnboardingModal from "../components/OnBoardingModal";
 import NewProjectModal from "../components/NewProjectModal";
@@ -16,19 +17,49 @@ export default function FeedPage() {
     const [checking, setChecking] = useState(true);
     const { userProfile, loadingProfile, refreshProfile } = useUser();
 
+    // comment states
     const [openComments, setOpenComments] = useState({});
     const [commentInputs, setCommentInputs] = useState({});
     const [visibleComments, setVisibleComments] = useState({});
-    const [editingComment, setEditingComment] = useState({}); // { commentId: true/false }
-    const [editInputs, setEditInputs] = useState({});         // { commentId: "text" }
+    const [editingComment, setEditingComment] = useState({}); 
+    const [editInputs, setEditInputs] = useState({}); 
+    
+    //collab states 
+    const [openCollabs, setOpenCollabs] = useState({});
+    const [collabInputs, setCollabInputs] = useState({});
 
     const completedProjects = projects.filter(item => item.status ==="COMPLETE");
     const activeProjects = projects.filter(item => item.status ==="ACTIVE");
+
+    // collab handlers
+    function toggleCollab(projectId) {
+        setOpenCollabs(prev => ({ ...prev, [projectId]: !prev[projectId] }));
+        setOpenComments(prev => ({ ...prev, [projectId]: false }));
+    }
+
+    function handleCollabInput(projectId, field, value) {
+        setCollabInputs(prev => ({
+            ...prev,
+            [projectId]: { ...prev[projectId], [field]: value }
+        }));
+    }
+
+    async function handlePostCollab(projectId) {
+        const title = collabInputs[projectId]?.title?.trim();
+        const message = collabInputs[projectId]?.message?.trim();
+        if (!title || !message) return;
+
+        await addCollaboration(projectId, userProfile.userId, title, message)
+
+        setCollabInputs(prev => ({ ...prev, [projectId]: { title: "", message: "" } }));
+        setOpenCollabs(prev => ({ ...prev, [projectId]: false }));
+    }
  
 
     // comment handlers
     async function toggleComments(projectId) {
         setOpenComments( prev => ({ ...prev, [projectId]: !prev[projectId] }) );
+        setOpenCollabs(prev => ({ ...prev, [projectId]: false }));
     }
 
     async function handleCommentInput(projectId, value) {
@@ -203,12 +234,51 @@ export default function FeedPage() {
                                         <div className="support-row"> support: {item.support ?? 'None'}</div>
                                         <hr className="divider" />
                                         <div className="post-actions">
-                                            <button 
+                                            <button
                                                 className={`action-btn${openComments[item.projectId] ? " active" : ""}`}
                                                 onClick={() => toggleComments(item.projectId)}
-                                                    >Comment</button>
-                                            <button className="action-btn collab">Collaborate</button>
+                                            >Comment</button>
+                                            <button
+                                                className={`action-btn collab${openCollabs[item.projectId] ? " active" : ""}`}
+                                                onClick={() => toggleCollab(item.projectId)}
+                                            >Collaborate</button>
                                         </div>
+
+                                        {openCollabs[item.projectId] && (
+                                            <div className="comment-section">
+                                                <div className="comment-input-row">
+                                                    <div className="avatar sm">{avatarHelper(userProfile?.username)}</div>
+                                                    <div className="collab-user-info">
+                                                        <span className="collab-username">{userProfile?.username}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="collab-title">Send a collaboration request</div>
+                                                <input
+                                                    className="comment-input"
+                                                    type="text"
+                                                    placeholder="Title…"
+                                                    value={collabInputs[item.projectId]?.title || ""}
+                                                    onChange={e => handleCollabInput(item.projectId, "title", e.target.value)}
+                                                />
+                                                <input
+                                                    className="comment-input"
+                                                    type="text"
+                                                    placeholder="Message…"
+                                                    value={collabInputs[item.projectId]?.message || ""}
+                                                    onChange={e => handleCollabInput(item.projectId, "message", e.target.value)}
+                                                    onKeyDown={e => e.key === "Enter" && handlePostCollab(item.projectId)}
+                                                />
+                                                <div className="comment-actions-row">
+                                                    <button
+                                                        className="btn btn-primary comment-post-btn"
+                                                        disabled={!collabInputs[item.projectId]?.title?.trim() || !collabInputs[item.projectId]?.message?.trim()}
+                                                        onClick={() => handlePostCollab(item.projectId)}
+                                                    >
+                                                        Send Request
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
 
                                         {openComments[item.projectId] && (
                                             <div className="comment-section">

@@ -368,6 +368,27 @@
     color: #999;
 }
 
+.collab-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 8px 0 6px;
+    color: #333;
+}
+
+.collab-user-info {
+    display: flex;
+    align-items: center;
+}
+
+.collab-username {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.comment-input + .comment-input {
+    margin-top: 6px;
+}
+
 .load-more-btn {
     background: none;
     border: none;
