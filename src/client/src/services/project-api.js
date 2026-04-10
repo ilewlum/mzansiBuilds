@@ -4,13 +4,11 @@ export async function getProjects() {
   if (!response.ok) {
     throw new Error("Failed to fetch projects");
   }
- 
   return response.json();
 }
  
 // FIX: added support parameter to match the form field collected in NewProjectModal
 export async function addProject(userId, title, description,support, techStack, stage, visibility, status) {
-  console.log( "Project-level: ","title: ",title, "userId: ",userId, "desc: ",description, "stage: ",stage, "visibility: ",visibility, "techStack: ",techStack, "status: ",status, "support: ",support )
   try {
     const response = await fetch("api/projects/add", {
       method: "POST",

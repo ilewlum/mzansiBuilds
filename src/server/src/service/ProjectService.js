@@ -9,13 +9,13 @@ export default class ProjectService {
 
   // Creates a new project with the provided details and saves it to the repository.
   async createProject(project) {
-    const savedProject = await this.projectRepo.Add(project);
+    const savedProject = await this.projectRepo.createProject(project);
     return savedProject;
   }
 
   // Updates an existing project's details based on the provided information and saves the changes to the repository.
   async updateProject({ projectId, title, description, stage, visibility, techStack, status,support }) {
-    const savedProject = await this.projectRepo.update({ projectId, 
+    const savedProject = await this.projectRepo.updateProject({ projectId, 
                                                         title, 
                                                         description, 
                                                         stage, 
@@ -28,19 +28,20 @@ export default class ProjectService {
 
   // Retrieves a project by its unique identifier from the repository.
   async getProjectById(projectId) {
-    const project = await this.projectRepo.findById(projectId);
+    const project = await this.projectRepo.getById(projectId);
     return project;
   }
 
   // Retrieves all projects associated with a specific user identifier from the repository.
-  async getProjectByUserId(UserId) {
-    const projects = await this.projectRepo.findByUserId(UserId);
+  async getProjectsByUserId(UserId) {
+    const projects = await this.projectRepo.getByUserId(UserId);
     return projects;
   }
 
   // Retrieves all public projects from the repository.
   async getAllPublicProjects() {
-    const projects = await this.projectRepo.findPublic();
+    const projects = await this.projectRepo.getPublic();
+    console.log(projects);
     return projects;
   }
 

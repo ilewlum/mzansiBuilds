@@ -6,7 +6,7 @@ export default class ProjectRepo {
   }
 
     // Adds a new project to the database.
-    async Add(project) {
+    async createProject(project) {
         const { data, error } = await this.supabase
             .from("projects")
             .insert([{
@@ -27,7 +27,7 @@ export default class ProjectRepo {
     }
 
     // Retrieves a project by its unique identifier.
-    async findById(projectId) {
+    async getById(projectId) {
         const { data, error } = await this.supabase
             .from("projects")
             .select("*")
@@ -38,7 +38,7 @@ export default class ProjectRepo {
     }
 
     // Retrieves all projects associated with a specific user.
-    async findByUserId(userId) {
+    async getByUserId(userId) {
         const { data, error } = await this.supabase
             .from("projects")
             .select("*")
@@ -48,29 +48,19 @@ export default class ProjectRepo {
     }
 
     // Retrieves all public projects that are currently active.
-    async findPublic(){
+    async getPublic(){
         const { data, error } = await this.supabase            
             .from("projects")
-            .select("projectId, title, description, stage, visibility, techStack,status,support, users(username) ")
+            .select("projectId, title, description, stage, visibility, techStack,status,support, users(username), createdAt, comments( commentId, body, createdAt, users(username))")
             .eq("visibility", "PUBLIC")
-            .order("createdAt", { ascending: false }); 
-        if (error) throw error;
-        return data;
-    }
-
-    async findCompleted(){
-        const { data, error } = await this.supabase            
-            .from("projects")
-            .select("projectId, title, description, stage, visibility, techStack,status,support, users(username) ")
-            .eq("visibility", "PUBLIC")
-            .eq("status", "COMPLETE")
-            .order("createdAt", { ascending: false }); 
+            .order("createdAt", { ascending: false })
+            .order("createdAt", { foreignTable: "comments", ascending: false })
         if (error) throw error;
         return data;
     }
 
     // Updates an existing project's details in the database.
-    async update({ projectId, title, description, stage, visibility, techStack, status, support }){
+    async updateProject({ projectId, title, description, stage, visibility, techStack, status, support }){
         const { data, error } = await this.supabase
             .from("projects")
             .update({ 
