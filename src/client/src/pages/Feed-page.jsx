@@ -1,21 +1,24 @@
 // Main feed page displaying user profile, project posts, and celebration wall
 import "./Feed-page.css";
 import { useEffect, useState } from "react";
-import { getProjects, addProject } from "../services/project-api";
 import { addComment, updateComment, deleteComment } from "../services/comment-api";
 import { addCollaboration } from "../services/collaboration-api";
 import { findUserProfile, getCurrentUser } from "../services/user-api";
 import OnboardingModal from "../components/OnBoardingModal";
 import NewProjectModal from "../components/NewProjectModal";
 import { useUser } from "../context/UserContext";
+import {useProject } from "../context/ProjectContext";
 
 
 export default function FeedPage() {
-    const [projects, setProjects] = useState([]);
     const [needsOnboarding, setNeedsOnboarding] = useState(false);
     const [showNewProjectModal, setShowNewProjectModal] = useState(false);
     const [checking, setChecking] = useState(true);
     const { userProfile, loadingProfile, refreshProfile } = useUser();
+
+    
+    const [localProjects, setLocalProjects] = useState([]);
+    const { activeProjects, completedProjects, addProject} = useProject();
 
     // comment states
     const [openComments, setOpenComments] = useState({});
@@ -27,9 +30,6 @@ export default function FeedPage() {
     // collab states
     const [openCollabs, setOpenCollabs] = useState({});
     const [collabInputs, setCollabInputs] = useState({});
-
-    const completedProjects = projects.filter(item => item.status === "COMPLETE");
-    const activeProjects = projects.filter(item => item.status === "ACTIVE");
 
     // collab handlers
     function toggleCollab(projectId) {
@@ -71,7 +71,7 @@ export default function FeedPage() {
         await addComment(projectId, userProfile.userId, text);
         setCommentInputs(prev => ({ ...prev, [projectId]: "" }));
 
-        setProjects(prev => prev.map(p => {
+        setLocalProjects(prev => prev.map(p => {
             if (p.projectId !== projectId) return p;
             const newComment = {
                 commentId: Date.now(),
@@ -100,7 +100,7 @@ export default function FeedPage() {
         const text = editInputs[commentId]?.trim();
         if (!text) return;
         await updateComment(commentId, text);
-        setProjects(prev => prev.map(p => {
+        setLocalProjects(prev => prev.map(p => {
             if (p.projectId !== projectId) return p;
             return {
                 ...p,
@@ -114,7 +114,7 @@ export default function FeedPage() {
 
     async function handleDeleteComment(projectId, commentId) {
         await deleteComment(commentId);
-        setProjects(prev => prev.map(p => {
+        setLocalProjects(prev => prev.map(p => {
             if (p.projectId !== projectId) return p;
             return { ...p, comments: p.comments.filter(c => c.commentId !== commentId) };
         }));
@@ -147,30 +147,18 @@ export default function FeedPage() {
     // ── Returns the created project so the modal can attach milestones to it ──
     async function handleNewProject(form) {
         try {
-            const newProject = await addProject(
+            return await addProject(
                 userProfile.userId, form.title, form.description,
                 form.support, form.stack, form.stage, form.visibility, form.status
             );
-            const updatedProjects = await getProjects();
-            setProjects(updatedProjects);
-            return newProject; // ← modal needs this for the projectId
         } catch (error) {
             console.error("Error adding project:", error);
         }
     }
 
-    // Load projects for feed display
     useEffect(() => {
-        async function loadProjects() {
-            try {
-                const response = await getProjects();
-                setProjects(response);
-            } catch (error) {
-                console.error("Error fetching projects:", error);
-            }
-        }
-        loadProjects();
-    }, []);
+        setLocalProjects(activeProjects);
+    }, [activeProjects]);
 
     if (checking || loadingProfile) return null;
 
@@ -219,7 +207,7 @@ export default function FeedPage() {
                         </div>
 
                         {/* Post cards */}
-                        {activeProjects.map((item, i) => (
+                        {localProjects.map((item, i) => (
                             <div className="post-card" key={item.projectId} style={{ animationDelay: `${0.1 + i * 0.07}s` }}>
                                 <div className="post-header">
                                     <div className="avatar sm">{avatarHelper(item.users.username)}</div>
