@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useProject } from "../context/ProjectContext";
-import "./Project-page.css"
+import "./Project-page.css";
 import { useUser } from "../context/UserContext";
 import NewProjectModal from "../components/NewProjectModal";
  
@@ -21,7 +21,6 @@ function Avatar({ initial }) {
 }
  
 function MilestoneList({ milestones }) {
-    console.log("Number of milesstones",milestones?.length);
   if (!milestones?.length) return null;
   const left = milestones.slice(0, Math.ceil(milestones.length / 2));
   const right = milestones.slice(Math.ceil(milestones.length / 2));
@@ -65,19 +64,48 @@ function formatDate(iso) {
   return `${dd} / ${mm} / ${yyyy}   ${hh}:${min}`;
 }
  
-function ProjectCard({ project }) {
+function ProjectCard({ project, index = 0, onEdit , onDelete}) {
   const [expanded, setExpanded] = useState(false);
  
   const username = project.users?.username ?? "unknown";
   const initial = username[0];
  
+  function handleEditClick(e) {
+    e.stopPropagation(); // don't toggle expand
+    onEdit(project);
+  }
+
+  function handleDeleteClick(e) {
+  e.stopPropagation(); // prevent expand toggle
+
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this project?"
+  );
+
+  if (confirmDelete) {
+    onDelete(project.projectId);
+  }
+}
+ 
   return (
-    <article className="project-card" onClick={() => setExpanded((e) => !e)}>
+    <article
+      className="project-card"
+      style={{ animationDelay: `${index * 0.07}s` }}
+      onClick={() => setExpanded((e) => !e)}
+    >
       <div className="project-card__header">
         <h2 className="project-card__title">{project.title}</h2>
-        <span className={`project-card__status ${STAGE_COLORS[project.stage] ?? ""}`}>
-          {STAGE_LABELS[project.stage] ?? project.stage}
-        </span>
+        <div className="project-card__header-right">
+          <span className={`project-card__status ${STAGE_COLORS[project.stage] ?? ""}`}>
+            {STAGE_LABELS[project.stage] ?? project.stage}
+          </span>
+          <button className="project-card__edit-btn" onClick={handleEditClick}>
+            Edit
+          </button>
+          <button className="project-card__delete-btn" onClick={handleDeleteClick}>
+            Delete
+          </button>
+        </div>
       </div>
  
       <p className="project-card__desc">{project.description}</p>
@@ -108,9 +136,10 @@ export default function ProjectsPage() {
   const [stageFilter, setStageFilter] = useState("All");
   const [sortOrder, setSortOrder] = useState("Newest");
   const [showNewProjectModal, setShowNewProjectModal] = useState(false);
+  const [editingProject, setEditingProject] = useState(null);
  
   const { userProfile } = useUser();
-  const { projects, addProject } = useProject();
+  const { userProjects, addProject, updateProject, deleteProject } = useProject();
  
   async function handleNewProject(form) {
     try {
@@ -123,7 +152,26 @@ export default function ProjectsPage() {
     }
   }
  
-  const filtered = projects
+  async function handleEditProject(form) {
+    try {
+      return await updateProject(
+        editingProject.projectId, form.title, form.description,
+        form.support, form.stack, form.stage, form.visibility, form.status
+      );
+    } catch (error) {
+      console.error("Error updating project:", error);
+    }
+  }
+
+  async function handleDeleteProject(projectId) {
+  try {
+    await deleteProject(projectId);
+  } catch (error) {
+    console.error("Error deleting project:", error);
+  }
+}
+ 
+  const filtered = userProjects
     .filter((p) => {
       const matchesSearch =
         p.title?.toLowerCase().includes(search.toLowerCase()) ||
@@ -145,6 +193,14 @@ export default function ProjectsPage() {
         <NewProjectModal
           onClose={() => setShowNewProjectModal(false)}
           onSubmit={handleNewProject}
+        />
+      )}
+ 
+      {editingProject && (
+        <NewProjectModal
+          initialData={editingProject}
+          onClose={() => setEditingProject(null)}
+          onSubmit={handleEditProject}
         />
       )}
  
@@ -185,7 +241,15 @@ export default function ProjectsPage() {
  
         <div className="project-list">
           {filtered.length > 0 ? (
-            filtered.map((p) => <ProjectCard key={p.projectId} project={p} />)
+            filtered.map((p, i) => (
+              <ProjectCard
+                key={p.projectId}
+                project={p}
+                index={i}
+                onEdit={setEditingProject}
+                onDelete = {handleDeleteProject}
+              />
+            ))
           ) : (
             <p className="no-results">No projects match your search.</p>
           )}

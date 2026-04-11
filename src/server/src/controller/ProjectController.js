@@ -24,6 +24,7 @@ export default class ProjectController{
     updateProject = async (req, res) => {
         try {
             const { id } = req.params;
+            console.log("projectController : id", id);
             const { title, description, stage, visibility, techStack, status, support } = req.body;
             const project = await this.projectService.updateProject({
                 projectId: id,
@@ -38,6 +39,7 @@ export default class ProjectController{
 
             res.json(project);
         } catch (err) {
+            console.log(err);
             res.status(500).json({ error: err.message });
         }
     };

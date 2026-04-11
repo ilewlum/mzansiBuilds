@@ -9,9 +9,14 @@
   --green-accent: #4a7a2e;
   --card-bg: #ffffff;
   --card-border: #d0e8b8;
+  --text-primary: #1a2e0f;
+  --text-secondary: #3d5c28;
+  --text-muted: #6b8a52;
   --status-progress: #2d7a3a;
   --status-planning: #7a5c2d;
   --status-completed: #2d5a7a;
+  --navbar-bg: #f5faee;
+  --navbar-border: #c8e0a8;
   --shadow-card: 0 2px 12px rgba(60, 100, 30, 0.10), 0 1px 3px rgba(60, 100, 30, 0.07);
   --shadow-card-hover: 0 8px 32px rgba(60, 100, 30, 0.18), 0 2px 8px rgba(60, 100, 30, 0.10);
   --radius: 14px;
@@ -36,12 +41,11 @@ input, select, textarea { font-family: var(--font-body); }
     var(--green-bg);
 }
  
- 
 /* ── Main ── */
 .main {
   max-width: 880px;
   margin: 0 auto;
-  padding: 90px 30px 60px;
+  padding: 100px 20px 60px;
 }
  
 /* ── Toolbar ── */
@@ -49,12 +53,12 @@ input, select, textarea { font-family: var(--font-body); }
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgb(255, 255, 255);
+  background: rgba(255,255,255,0.75);
   border: 1.5px solid rgba(255,255,255,0.9);
   backdrop-filter: blur(10px);
   border-radius: var(--radius);
   padding: 14px 18px;
-  box-shadow: 0 2px 14px rgba(60, 100, 30, 0.221);
+  box-shadow: 0 2px 14px rgba(60,100,30,0.08);
 }
  
 .toolbar__search {
@@ -63,13 +67,13 @@ input, select, textarea { font-family: var(--font-body); }
   border-radius: var(--radius-sm);
   padding: 9px 16px;
   font-size: 0.88rem;
-  color:black;
+  color: var(--text-secondary);
   background: #fff;
   outline: none;
   transition: border-color 0.18s, box-shadow 0.18s;
   font-style: italic;
 }
-.toolbar__search::placeholder { color: #000000; }
+.toolbar__search::placeholder { color: #9ab87a; }
 .toolbar__search:focus {
   border-color: var(--green-dark);
   box-shadow: 0 0 0 3px rgba(90,138,60,0.12);
@@ -81,13 +85,13 @@ input, select, textarea { font-family: var(--font-body); }
   padding: 9px 14px 9px 12px;
   font-size: 0.84rem;
   color: var(--text-secondary);
-  background: #ffffff;
+  background: #fff;
   outline: none;
   cursor: pointer;
   transition: border-color 0.18s;
   appearance: auto;
 }
-.toolbar__select:focus { border-color: rgb(255, 255, 255); }
+.toolbar__select:focus { border-color: var(--green-dark); }
  
 .toolbar__new-btn {
   padding: 9px 20px;
@@ -105,7 +109,7 @@ input, select, textarea { font-family: var(--font-body); }
 .toolbar__new-btn:hover {
   background: var(--green-accent);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgb(236, 236, 236);
+  box-shadow: 0 4px 14px rgba(60,100,30,0.26);
 }
 .toolbar__new-btn:active { transform: translateY(0); }
  
@@ -135,7 +139,7 @@ input, select, textarea { font-family: var(--font-body); }
  
 /* ── Project Card ── */
 .project-card {
-  background: white;
+  background: var(--card-bg);
   border: 1.5px solid var(--card-border);
   border-radius: var(--radius);
   padding: 24px 28px 20px;
@@ -176,14 +180,14 @@ input, select, textarea { font-family: var(--font-body); }
  
 .project-card__desc {
   font-size: 0.84rem;
-  color: black;
+  color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: 12px;
 }
  
 .project-card__stack {
   font-size: 0.82rem;
-  color: black;
+  color: var(--text-muted);
   margin-bottom: 16px;
   font-family: var(--font-mono);
   letter-spacing: 0.02em;
@@ -197,7 +201,7 @@ input, select, textarea { font-family: var(--font-body); }
 .milestones__label {
   font-size: 0.82rem;
   font-weight: 700;
-  color: black;
+  color: var(--text-primary);
   text-decoration: underline;
   text-underline-offset: 3px;
   margin-bottom: 8px;
@@ -243,8 +247,9 @@ input, select, textarea { font-family: var(--font-body); }
 }
  
 .project-card__date {
+  font-family: var(--font-mono);
   font-size: 0.76rem;
-  color: black;
+  color: var(--text-muted);
   font-style: italic;
 }
  
@@ -253,7 +258,7 @@ input, select, textarea { font-family: var(--font-body); }
   align-items: center;
   gap: 8px;
   font-size: 0.80rem;
-  color: black;
+  color: var(--text-secondary);
 }
  
 /* ── Avatar ── */
@@ -389,13 +394,54 @@ input, select, textarea { font-family: var(--font-body); }
  
 .milestone__desc {
   font-style: italic;
-  color: black;
+  color: var(--text-muted);
 }
  
 /* ── Support ── */
 .project-card__support {
   font-size: 0.82rem;
-  color: black;
+  color: var(--text-muted);
   margin-bottom: 12px;
   font-family: var(--font-mono);
+}
+ 
+/* ── Card edit button ── */
+.project-card__header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+ 
+.project-card__edit-btn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.project-card__edit-btn:hover {
+  background: var(--green-dark);
+  color: #fff;
+  border-color: var(--green-dark);
+}
+
+.project-card__delete-btn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.project-card__delete-btn:hover {
+  background: var(--green-dark);
+  color: #fff;
+  border-color: var(--green-dark);
 }
