@@ -55,6 +55,7 @@ export default class MilestoneController{
     deleteMilestone = async (req, res) => {
         try {
             const { id } = req.params;
+            console.log(id);
             await this.milestoneService.deleteMilestone(id);
             res.status(204).send();
         } catch (err) {

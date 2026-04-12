@@ -16,6 +16,6 @@ router.post("/add", milestoneController.createMilestone);
 router.get("/:id", milestoneController.getMilestoneById);
 router.get("/projectId/:id", milestoneController.getMilestoneByProjectId);
 router.put("/update/:id", milestoneController.updateMilestone);
-router.delete("/delete/:id", milestoneController.updateMilestone);
+router.delete("/delete/:id", milestoneController.deleteMilestone);
 
 export default router;

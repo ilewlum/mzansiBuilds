@@ -40,28 +40,25 @@ export default function NewProjectModal({ onClose, onSubmit, initialData }) {
   const [milestoneInput, setMilestoneInput] = useState({ title: "", message: "" });
   const [isSavingMilestone, setIsSavingMilestone] = useState(false);
  
-  const isMilestoneValid =
-    milestoneInput.title.trim() !== "" && milestoneInput.message.trim() !== "";
+  const isMilestoneValid = milestoneInput.title.trim() !== "" && milestoneInput.message.trim() !== "";
  
   const handleSubmit = async () => {
     const project = await onSubmit({ ...form });
-    console.log(isEditing ? "[Project] Updated:" : "[Project] Created:", project);
- 
-    // Only save new milestones (those without a milestoneId) in both modes
     const newMilestones = milestones.filter((m) => !m.milestoneId);
  
-    if (newMilestones.length > 0 && project?.projectId) {
+    // FIX: In edit mode, onSubmit (updateProject) returns undefined, so fall
+    // back to initialData.projectId which is already available in scope.
+    const projectId = project?.projectId ?? initialData?.projectId;
+ 
+    if (projectId) {
       setIsSavingMilestone(true);
       try {
-        await Promise.all(
-          newMilestones.map((m) => {
-            console.log(`[Milestone] → Calling addMilestone for: "${m.title}"`);
-            return addMilestone(project.projectId, m.title, m.message);
-          })
-        );
-        console.log("[Milestone] All new milestones saved successfully");
+        await Promise.all([
+          ...newMilestones.map((m) => addMilestone(projectId, m.title, m.message)),
+          ...removedMilestoneIds.map((id) => deleteMilestone(id)),
+        ]);
       } catch (err) {
-        console.error("[Milestone] Failed to save milestones:", err);
+        console.error("[Milestone] Failed to sync milestones:", err);
       } finally {
         setIsSavingMilestone(false);
       }
@@ -92,6 +89,10 @@ export default function NewProjectModal({ onClose, onSubmit, initialData }) {
   };
  
   const handleRemoveMilestone = (index) => {
+    const milestone = milestones[index];
+    if (milestone.milestoneId) {
+      setRemovedMilestoneIds((prev) => [...prev, milestone.milestoneId]);
+    }
     setMilestones((prev) => prev.filter((_, i) => i !== index));
   };
  
