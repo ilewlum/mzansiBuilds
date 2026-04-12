@@ -1,7 +1,7 @@
 // Provides user profile data and loading state to the app via context
 import { useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
-import { getCurrentUser, findUserProfile } from "../services/user-api";
+import { getCurrentUser, findUserProfile, handleLogout } from "../services/user-api";
 
 export function UserProvider({ children }) {
     const [userProfile, setUserProfile] = useState(null);
@@ -36,8 +36,15 @@ export function UserProvider({ children }) {
         }
     }
 
+    // Logs the user out and clears profile state
+    async function logout() {
+        await handleLogout();
+        setUserProfile(null);
+        window.location.href = "/";
+    }
+
     return (
-        <UserContext.Provider value={{ userProfile, loadingProfile, refreshProfile }}>
+        <UserContext.Provider value={{ userProfile, loadingProfile, refreshProfile, logout }}>
             {children}
         </UserContext.Provider>
     );
