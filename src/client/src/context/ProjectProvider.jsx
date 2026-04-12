@@ -82,6 +82,11 @@ export function ProjectProvider({ children }) {
     const userProjects = userProfile
     ? projects.filter(p => p.userId === userProfile.userId)
     : [];
+
+    const collabProjects = userProfile
+    ?  projects.filter(p => p.collaborations.userId === userProfile.userId)
+    : [];
+
     console.log(projects[0]);
     console.log(userProfile);
 
@@ -91,6 +96,7 @@ export function ProjectProvider({ children }) {
             userProjects,
             activeProjects,
             completedProjects,
+            collabProjects,
             loadingProjects,
             error,
             addProject,

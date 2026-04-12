@@ -55,10 +55,8 @@ export default class CollaborationController{
         try {
             const { id } = req.params;
             const { status} = req.body;
-            const collaboration = await this.commentService.updateCollaboration(
-                id,
-                status
-            );
+            console.log("Controller layer: ", id, status)
+            const collaboration = await this.collaborationService.updateCollaboration(id,status);
             res.json(collaboration);
         } catch (err) {
             console.log(err)

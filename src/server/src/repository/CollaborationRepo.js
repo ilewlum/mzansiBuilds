@@ -55,7 +55,7 @@ export default class Collaboration{
     async updateCollaboration(collaborationId, status){
         const { data, error } = await this.supabase
             .from("collaborations")
-            .update({ body })
+            .update({ status })
             .eq("collaborationId", collaborationId)
             .select()
             .single(); 

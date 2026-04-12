@@ -24,9 +24,10 @@ export async function addCollaboration(projectId, requestingUserId, title, messa
 
 export async function updateCollaboration(collaborationId, status)
 {
+    console.log(collaborationId, status)
     try
     {
-        const response = await fetch(`/api/comments/update/${collaborationId}`,
+        const response = await fetch(`/api/collaborations/update/${collaborationId}`,
         {
             method: "PUT",
             headers: { "Content-Type": "application/json" },

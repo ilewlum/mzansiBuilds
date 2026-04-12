@@ -51,7 +51,7 @@ export default class ProjectRepo {
     async getPublic(){
         const { data, error } = await this.supabase            
             .from("projects")
-            .select("projectId,userId,title, description, stage, visibility, techStack,status,support, users(username), createdAt, comments( commentId, body, createdAt, users(username)), milestones(milestoneId, title, description ))")
+            .select("projectId,userId,title, description, stage, visibility, techStack,status,support, users(username), createdAt, comments( commentId, body, createdAt, users(username)), milestones(milestoneId, title, description ), collaborations(collaborationId, title, status, users(userId, username))")
             //.eq("visibility", "PUBLIC")
             .order("createdAt", { ascending: false })
             .order("createdAt", { foreignTable: "comments", ascending: false })
