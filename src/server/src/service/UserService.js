@@ -8,34 +8,34 @@ export default class UserService {
   }
 
   // Creates a new user with the provided details and saves it to the repository.
-  async createUser({ userId,username, email, bio }) {
+  async createUser({ userId,username, email, bio }, client) {
     console.log("Service - Creating user:", { userId, username, email, bio });
     const user = new User(userId, username, email, bio);
-    const savedUser = await this.userRepo.createUser(user);
+    const savedUser = await this.userRepo.createUser(user, client);
     return savedUser;
   }
 
   // Updates an existing user's details based on the provided information and saves the changes to the repository.
-  async updateUser({ userId,username, email, bio }) {
-    const savedUser = await this.userRepo.updateUser({ userId, username, email, bio});
+  async updateUser({ userId,username, email, bio }, client) {
+    const savedUser = await this.userRepo.updateUser({ userId, username, email, bio}, client);
     return savedUser;
   }
 
   // Retrieves a user by their unique identifier from the repository.
-  async getUserById(userId){
-    const user = await this.userRepo.getUserById(userId);
+  async getUserById(userId, client){
+    const user = await this.userRepo.getUserById(userId, client);
     return user;
   }
 
   // Retrieves all users from the repository.
-  async getAllUsers(){
-    const users = await this.userRepo.getAllUsers();
+  async getAllUsers(client){
+    const users = await this.userRepo.getAllUsers(client);
     return users;
   }
 
   // Deletes a user by their unique identifier from the repository and returns the deleted user.
-  async deleteUser(userId) {
-    const user = await this.userRepo.deleteUser(userId);
+  async deleteUser(userId, client) {
+    const user = await this.userRepo.deleteUser(userId, client);
     return user;
   }
 }

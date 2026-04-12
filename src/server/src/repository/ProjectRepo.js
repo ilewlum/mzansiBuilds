@@ -1,13 +1,17 @@
 // Repository for managing project data in the database using Supabase.
 
 export default class ProjectRepo {
-  constructor(supabase) {
-    this.supabase = supabase;
+    constructor(supabase) {
+    this.supabase = supabase; 
   }
+  
+    getClient(client){
+        return client || this.supabase
+    }
 
     // Adds a new project to the database.
-    async createProject(project) {
-        const { data, error } = await this.supabase
+    async createProject(project, client) {
+        const { data, error } = this.getClient(client)
             .from("projects")
             .insert([{
                 projectId: project.projectId,
@@ -27,8 +31,8 @@ export default class ProjectRepo {
     }
 
     // Retrieves a project by its unique identifier.
-    async getById(projectId) {
-        const { data, error } = await this.supabase
+    async getById(projectId, client) {
+        const { data, error } = await this.getClient(client)
             .from("projects")
             .select("*")
             .eq("projectId", projectId)
@@ -38,8 +42,8 @@ export default class ProjectRepo {
     }
 
     // Retrieves all projects associated with a specific user.
-    async getByUserId(userId) {
-        const { data, error } = await this.supabase
+    async getByUserId(userId, client) {
+        const { data, error } = await this.getClient(client)
             .from("projects")
             .select("projectId, users(userId, username), title, description, stage, visibility, techStack, status, support, createdAt, milestones(milestoneId, title, description),collaborations(collaborationId, title, status, users(userId, username)) ")
             .eq("userId", userId)
@@ -61,8 +65,8 @@ export default class ProjectRepo {
     }
 
     // Updates an existing project's details in the database.
-    async updateProject({ projectId, title, description, stage, visibility, techStack, status, support }){
-        const { data, error } = await this.supabase
+    async updateProject({ projectId, title, description, stage, visibility, techStack, status, support }, client){
+        const { data, error } = await this.getClient(client)
             .from("projects")
             .update({ 
                 title, 
@@ -81,8 +85,8 @@ export default class ProjectRepo {
     }
 
     // Deletes a project from the database based on its unique identifier.
-    async delete(projectId) {
-        const { data, error } = await this.supabase
+    async delete(projectId, client) {
+        const { data, error } = await this.getClient(client)
             .from("projects")
             .delete()
             .eq("projectId", projectId)

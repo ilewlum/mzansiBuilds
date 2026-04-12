@@ -70,7 +70,7 @@ export default function OnboardingModal({onComplete })
         setLoggingOut(true);
         try{
             await handleLogout();
-            window.location.href = "/login";
+            window.location.href = "/";
         }catch{
             setLoggingOut(false);
         }

@@ -1,14 +1,14 @@
 import express from "express"
+import { supabaseAdmin } from "../config/supabaseClient.js"
 import CommentController from "../controller/CommentController.js"
 import CommentService from "../service/CommentService.js"
 import CommentRepo from "../repository/CommentRepo.js"
-import supabase from "../config/supabaseClient.js"
 import { requireAuth } from "../middleware/AuthMiddleware.js"
 
 const router = express.Router();
 
 // dependency injection
-const commentRepo = new CommentRepo(supabase)
+const commentRepo = new CommentRepo(supabaseAdmin)
 const commentService = new CommentService(commentRepo);
 const commentController = new CommentController(commentService)
 

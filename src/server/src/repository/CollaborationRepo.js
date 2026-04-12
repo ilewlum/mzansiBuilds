@@ -2,12 +2,18 @@
 
 export default class Collaboration{
     constructor(supabase) {
-    this.supabase = supabase;
+    this.supabase = supabase; // ✅ this was removed at some point
   }
 
+
+    getClient(client){
+        return client || this.supabase
+    }
+
   // Adds a new collaborationRequest to the database.
-    async addCollaboration( collaboration ) {
-        const { data, error } = await this.supabase
+    async addCollaboration( collaboration , client) {
+        console.log(collaboration, client)
+        const { data, error } = await this.getClient(client)
             .from("collaborations")
             .insert([{
                 collaborationId:    collaboration.collaborationId,
@@ -22,8 +28,8 @@ export default class Collaboration{
         return data;
     }
 
-    async getById(collaborationId) {
-        const { data, error } = await this.supabase
+    async getById(collaborationId , client) {
+        const { data, error } = await this.getClient(client)
             .from("collaborations")
             .select("*")
             .eq("collaborationId", collaborationId)
@@ -32,8 +38,8 @@ export default class Collaboration{
         return data;
     }
 
-    async getByProjectId(projectId) {
-        const { data, error } = await this.supabase
+    async getByProjectId(projectId, client) {
+        const { data, error } = await this.getClient(client)
             .from("collaborations")
             .select("*")
             .eq("projectId", projectId)
@@ -42,8 +48,8 @@ export default class Collaboration{
         return data;
     }
 
-    async getByUserId( userId ) {
-        const { data, error } = await this.supabase
+    async getByUserId( userId , client) {
+        const { data, error } = await this.getClient(client)
             .from("collaborations")
             .select("*")
             .eq("userId", userId)
@@ -52,8 +58,8 @@ export default class Collaboration{
         return data;
     }
 
-    async updateCollaboration(collaborationId, status){
-        const { data, error } = await this.supabase
+    async updateCollaboration(collaborationId, status, client){
+        const { data, error } = await this.getClient(client)
             .from("collaborations")
             .update({ status })
             .eq("collaborationId", collaborationId)
@@ -63,8 +69,8 @@ export default class Collaboration{
         return data;
     }
 
-    async delete(collaborationId) {
-        const { data, error } = await this.supabase
+    async delete(collaborationId , client) {
+        const { data, error } = await this.getClient(client)
             .from("collaborations")
             .delete()
             .eq("collaborationId", collaborationId)

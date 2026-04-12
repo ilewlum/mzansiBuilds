@@ -51,7 +51,10 @@ export async function getCurrentUser() {
 
 // function to find user profile data by user ID, used in onboarding checks and profile loading
 export async function findUserProfile(userId) {
-  const response = await fetch(`api/users/${userId}`);
+  const token = await getAccessToken();
+  const response = await fetch(`api/users/${userId}`,{
+    headers : { Authorization : `Bearer ${token}` }
+  });
   if (!response.ok) {
     throw new Error("Failed to fetch user profile");
   }

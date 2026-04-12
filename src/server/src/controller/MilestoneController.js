@@ -9,7 +9,7 @@ export default class MilestoneController{
         try{
             const {projectId, title, description} = req.body;
             const newMilestone = Milestone.createMilestone(projectId, title, description);
-            const milestone = await this.milestoneService.addMilestone(newMilestone.toJSON());
+            const milestone = await this.milestoneService.addMilestone(newMilestone.toJSON(), req.supabase);
             res.status(201).json(milestone);
         }
         catch (err) {
@@ -21,7 +21,7 @@ export default class MilestoneController{
     getMilestoneById = async (req, res) => {
         try {
             const { id } = req.params;
-            const milestone = await this.milestoneService.getMilestoneById(id);
+            const milestone = await this.milestoneService.getMilestoneById(id, req.supabase);
             res.json(milestone);
         } catch (err) {
             res.status(500).json({ error: err.message });
@@ -31,7 +31,7 @@ export default class MilestoneController{
     getMilestoneByProjectId = async (req, res) => {
         try {
             const { id } = req.params;
-            const milestone = await this.milestoneService.getMilestoneByProjectId(id);
+            const milestone = await this.milestoneService.getMilestoneByProjectId(id, req.supabase);
             res.json(milestone);
         } catch (err) {
             res.status(500).json({ error: err.message });
@@ -44,7 +44,8 @@ export default class MilestoneController{
             const { description} = req.body;
             const milestone = await this.milestoneService.updateMilestone(
                 id,
-                description
+                description,
+                req.supabase
             );
             res.json(milestone);
         } catch (err) {
@@ -56,7 +57,7 @@ export default class MilestoneController{
         try {
             const { id } = req.params;
             console.log(id);
-            await this.milestoneService.deleteMilestone(id);
+            await this.milestoneService.deleteMilestone(id, req.supabase);
             res.status(204).send();
         } catch (err) {
             console.log(err.message);

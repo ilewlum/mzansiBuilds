@@ -1,14 +1,18 @@
 // Repository for user-related database operations using Supabase
 
 export default class UserRepo {
+
   constructor(supabase) {
-    this.supabase = supabase;
+    this.supabase = supabase; // ✅ this was removed at some point
+  }
+
+  getClient(client){
+    return client || this.supabase
   }
 
   // Create a new user in the database
-  async createUser(user) {
-    console.log("Repo - Creating user:", user);
-    const { data, error } = await this.supabase
+  async createUser(user, client) {
+    const { data, error } = await this.getClient(client)
         .from("users")
         .insert([{
             userId: user.userId,
@@ -24,14 +28,19 @@ export default class UserRepo {
   }
 
   // Retrieve a user by their unique ID
-  async getUserById(userId) {
-    const { data, error } = await this.supabase
+  async getUserById(userId, client) {
+    const { data, error } = await this.getClient(client)
       .from("users")
       .select("*")
       .eq("userId", userId)
       .single();    
 
-    if (error) throw error;
+    if (error) {
+      console.log(error)
+      throw error;
+    }
+    console.log("Done")
+    console.log(data)
     return data;
   }
 
@@ -46,8 +55,8 @@ export default class UserRepo {
   }
 
   // Update an existing user's information
-  async updateUser({ userId, username, email, bio}){
-    const { data, error } = await this.supabase
+  async updateUser({ userId, username, email, bio}, client){
+    const { data, error } = await this.getClient(client)
         .from("users")
         .update({ username, email, bio })
         .eq("userId", userId)
@@ -59,8 +68,8 @@ export default class UserRepo {
   }
 
   // Delete a user from the database by their unique ID
-  async deleteUser(userId) {
-    const { data, error } = await this.supabase
+  async deleteUser(userId, client) {
+    const { data, error } = await this.getClient(client)
       .from("users")
       .delete()
       .eq("userId", userId)

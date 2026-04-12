@@ -4,13 +4,13 @@ import express from "express";
 import ProjectController from "../controller/ProjectController.js";
 import ProjectService from "../service/ProjectService.js";
 import ProjectRepo from "../repository/ProjectRepo.js";
-import supabase from "../config/supabaseClient.js";
+import { supabaseAdmin } from "../config/supabaseClient.js";
 import { requireAuth } from "../middleware/AuthMiddleware.js"
 
 const router = express.Router();
 
 // dependency injection
-const projectRepo = new ProjectRepo(supabase);
+const projectRepo = new ProjectRepo(supabaseAdmin);
 const projectService = new ProjectService(projectRepo);
 const projectController = new ProjectController(projectService);
 

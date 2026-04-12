@@ -5,27 +5,27 @@ export default class MilestoneService{
     this.milestoneRepo = milestoneRepo;
   }
 
-  async addMilestone( milestone) {
-    const savedMilestone = await this.milestoneRepo.addMilestone(milestone);
+  async addMilestone( milestone, client) {
+    const savedMilestone = await this.milestoneRepo.addMilestone(milestone, client);
     return savedMilestone;
   }
 
-  async getMilestoneByProjectId( projectId){
-    const milestones = await this.milestoneRepo.getByProjectId(projectId);
+  async getMilestoneByProjectId( projectId, client){
+    const milestones = await this.milestoneRepo.getByProjectId(projectId, client);
     return milestones;
   }
 
-  async getMilestoneById( milestoneId){
-    const milestone = await this.milestoneRepo.getById(milestoneId);
+  async getMilestoneById( milestoneId, client){
+    const milestone = await this.milestoneRepo.getById(milestoneId, client);
     return milestone;
   }
 
-  async updateMilestone(milestoneId, description){
-    const milestone = await this.milestoneRepo.updateMilestone(milestoneId, description);
+  async updateMilestone(milestoneId, description, client){
+    const milestone = await this.milestoneRepo.updateMilestone(milestoneId, description, client);
     return milestone
   }
 
-  async deleteMilestone(milestoneId){
-    await this.milestoneRepo.delete(milestoneId);
+  async deleteMilestone(milestoneId, client){
+    await this.milestoneRepo.delete(milestoneId, client);
   }
 }

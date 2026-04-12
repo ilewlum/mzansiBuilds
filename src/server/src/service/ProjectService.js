@@ -8,13 +8,13 @@ export default class ProjectService {
   }
 
   // Creates a new project with the provided details and saves it to the repository.
-  async createProject(project) {
-    const savedProject = await this.projectRepo.createProject(project);
+  async createProject(project, client) {
+    const savedProject = await this.projectRepo.createProject(project, client);
     return savedProject;
   }
 
   // Updates an existing project's details based on the provided information and saves the changes to the repository.
-  async updateProject({ projectId, title, description, stage, visibility, techStack, status,support }) {
+  async updateProject({ projectId, title, description, stage, visibility, techStack, status,support }, client) {
     const savedProject = await this.projectRepo.updateProject({ projectId, 
                                                         title, 
                                                         description, 
@@ -22,19 +22,19 @@ export default class ProjectService {
                                                         visibility, 
                                                         techStack, 
                                                         status,
-                                                        support });
+                                                        support }, client);
     return savedProject;
   }
 
   // Retrieves a project by its unique identifier from the repository.
-  async getProjectById(projectId) {
-    const project = await this.projectRepo.getById(projectId);
+  async getProjectById(projectId , client) {
+    const project = await this.projectRepo.getById(projectId, client);
     return project;
   }
 
   // Retrieves all projects associated with a specific user identifier from the repository.
-  async getProjectsByUserId(UserId) {
-    const projects = await this.projectRepo.getByUserId(UserId);
+  async getProjectsByUserId(UserId, client) {
+    const projects = await this.projectRepo.getByUserId(UserId, client);
     return projects;
   }
 
@@ -45,8 +45,8 @@ export default class ProjectService {
   }
 
   // Deletes a project by its unique identifier from the repository and returns the deleted project.
-  async deleteProject(projectId) {
-    const project = await this.projectRepo.delete(projectId);
+  async deleteProject(projectId, client) {
+    const project = await this.projectRepo.delete(projectId, client);
     return project;
   }
 }

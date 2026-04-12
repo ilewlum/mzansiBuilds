@@ -11,7 +11,7 @@ export default class UserController{
         try {
             const { userId,username, email, bio } = req.body;
             console.log("Controller - Creating user:", { userId, username, email, bio });
-            const user = await this.userService.createUser({ userId, username, email, bio });
+            const user = await this.userService.createUser({ userId, username, email, bio }, req.supabase);
             res.status(201).json(user);
         } catch (err) {
             res.status(500).json({ error: err.message });
@@ -29,7 +29,7 @@ export default class UserController{
                 username,
                 email,
                 bio,
-            });
+            }, req.supabase);
 
             res.json(user);
         } catch (err) {
@@ -41,7 +41,7 @@ export default class UserController{
     getUserById = async (req, res) => {
         try {
             const { id } = req.params;
-            const user = await this.userService.getUserById(id);
+            const user = await this.userService.getUserById(id, req.supabase);
             res.json(user);
         } catch (err) {
             res.status(500).json({ error: err.message });
@@ -51,7 +51,7 @@ export default class UserController{
     // Retrieves all users and sends them as a JSON response.
     getAllUsers = async (req, res) => {
         try {
-            const users = await this.userService.getAllUsers();
+            const users = await this.userService.getAllUsers(req.supabase);
             res.json(users);
         } catch (err) {
             res.status(500).json({ error: err.message });
@@ -62,7 +62,7 @@ export default class UserController{
     deleteUser = async (req, res) => {
         try {
             const { id } = req.params;
-            await this.userService.deleteUser(id);
+            await this.userService.deleteUser(id, req.supabase);
             res.status(204).send();
         } catch (err) {
             res.status(500).json({ error: err.message });

@@ -2,13 +2,12 @@ import express from "express"
 import CollaborationController from "../controller/CollaborationController.js"
 import CollaborationService from "../service/CollaborationService.js"
 import CollaborationRepo from "../repository/CollaborationRepo.js"
-import supabase from "../config/supabaseClient.js"
 import { requireAuth } from "../middleware/AuthMiddleware.js"
 
 const router = express.Router();
 
 // dependency injection
-const collaborationRepo = new CollaborationRepo(supabase)
+const collaborationRepo = new CollaborationRepo()
 const collaborationService = new CollaborationService(collaborationRepo);
 const collaborationController = new CollaborationController(collaborationService)
 

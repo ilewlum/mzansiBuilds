@@ -5,9 +5,17 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const supabase = createClient(
+// Admin client , auth verification (no RLS)
+export const supabaseAdmin = createClient(
                               process.env.SUPABASE_URL,
                               process.env.SUPABASE_SERVICE_ROLE_KEY
                             )
 
-export default supabase
+// User-scoped client — RLS applies
+export function creatUserClient(token){
+  return createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY,
+    { global: { headers: { Authorization: `Bearer ${token}` } } }
+  )
+}

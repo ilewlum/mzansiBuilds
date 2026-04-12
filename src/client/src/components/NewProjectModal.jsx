@@ -78,6 +78,7 @@ export default function NewProjectModal({ onClose, onSubmit, initialData }) {
   };
  
   const handleAddMilestone = () => {
+    console.log("triggered");
     if (!isMilestoneValid) return;
     const newMilestone = {
       title: milestoneInput.title.trim(),

@@ -5,27 +5,27 @@ export default class CommentService{
     this.commentRepo = commentRepo;
   }
 
-  async addComment(comment) {
-    const savedComment = await this.commentRepo.addComment(comment);
+  async addComment(comment, client) {
+    const savedComment = await this.commentRepo.addComment(comment, client);
     return savedComment;
   }
 
-  async getCommentsByProjectId( projectId){
-    const comments = await this.commentRepo.getByProjectId(projectId);
+  async getCommentsByProjectId( projectId, client){
+    const comments = await this.commentRepo.getByProjectId(projectId, client);
     return comments;
   }
 
-  async getCommentById( commentId){
-    const comment = await this.commentRepo.getById(commentId);
+  async getCommentById( commentId, client){
+    const comment = await this.commentRepo.getById(commentId, client);
     return comment;
   }
 
-  async updateComment(commentId, body){
-    const comment = await this.commentRepo.updateComment(commentId, body);
+  async updateComment(commentId, body, client){
+    const comment = await this.commentRepo.updateComment(commentId, body, client);
     return comment
   }
 
-  async deleteComment(commentId){
-    await this.commentRepo.delete(commentId);
+  async deleteComment(commentId, client){
+    await this.commentRepo.delete(commentId, client);
   }
 }

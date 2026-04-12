@@ -2,13 +2,18 @@
 
 export default class MilestoneRepo{
     constructor(supabase) {
-    this.supabase = supabase;
+    this.supabase = supabase; // ✅ this was removed at some point
   }
 
+    getClient(client){
+        return client || this.supabase
+    }
+
   // Adds a new milestone to the database.
-    async addMilestone( milestone ) {
+    async addMilestone( milestone , client) {
         console.log(milestone);
-        const { data, error } = await this.supabase
+        console.log(client);
+        const { data, error } = await this.getClient(client)
             .from("milestones")
             .insert([{
                 milestoneId:    milestone.milestoneId,
@@ -22,8 +27,8 @@ export default class MilestoneRepo{
         return data;
     }
 
-    async getById(milestoneId) {
-        const { data, error } = await this.supabase
+    async getById(milestoneId , client) {
+        const { data, error } = await this.getClient(client)
             .from("milestones")
             .select("*")
             .eq("milestoneId", milestoneId)
@@ -32,8 +37,8 @@ export default class MilestoneRepo{
         return data;
     }
 
-    async getByProjectId(projectId) {
-        const { data, error } = await this.supabase
+    async getByProjectId(projectId, client) {
+        const { data, error } = await this.getClient(client)
             .from("milestones")
             .select("*")
             .eq("projectId", projectId)
@@ -42,8 +47,8 @@ export default class MilestoneRepo{
         return data;
     }
 
-    async updateMilestone(milestoneId, description){
-        const { data, error } = await this.supabase
+    async updateMilestone(milestoneId, description, client){
+        const { data, error } = await this.getClient(client)
             .from("milestones")
             .update({ description })
             .eq("milestoneId", milestoneId)
@@ -53,8 +58,8 @@ export default class MilestoneRepo{
         return data;
     }
 
-    async delete(milestoneId) {
-        const { data, error } = await this.supabase
+    async delete(milestoneId, client) {
+        const { data, error } = await this.getClient(client)
             .from("milestones")
             .delete()
             .eq("milestoneId", milestoneId)

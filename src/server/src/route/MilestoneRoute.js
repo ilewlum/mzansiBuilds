@@ -2,13 +2,12 @@ import express from "express"
 import MilestoneController from "../controller/MilestoneController.js"
 import MilestoneService from "../service/MilestoneService.js"
 import MilestoneRepo from "../repository/MilestoneRepo.js"
-import supabase from "../config/supabaseClient.js"
 import { requireAuth } from "../middleware/AuthMiddleware.js"
 
 const router = express.Router();
 
 // dependency injection
-const milestoneRepo = new MilestoneRepo(supabase)
+const milestoneRepo = new MilestoneRepo()
 const milestoneService = new MilestoneService(milestoneRepo);
 const milestoneController = new MilestoneController(milestoneService)
 

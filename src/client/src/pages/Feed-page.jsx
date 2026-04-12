@@ -18,7 +18,7 @@ export default function FeedPage() {
 
     
     const [localProjects, setLocalProjects] = useState([]);
-    const { activeProjects, completedProjects, addProject} = useProject();
+    const { activeProjects, refreshProjects, completedProjects, addProject} = useProject();
 
     // comment states
     const [openComments, setOpenComments] = useState({});
@@ -66,21 +66,21 @@ export default function FeedPage() {
     }
 
     async function handlePostComment(projectId) {
-        const text = commentInputs[projectId]?.trim();
-        if (!text) return;
-        await addComment(projectId, userProfile.userId, text);
-        setCommentInputs(prev => ({ ...prev, [projectId]: "" }));
-
-        setLocalProjects(prev => prev.map(p => {
-            if (p.projectId !== projectId) return p;
-            const newComment = {
-                commentId: Date.now(),
-                body: text,
-                users: { username: userProfile.username }
-            };
-            return { ...p, comments: [...(p.comments || []), newComment] };
-        }));
-    }
+    const text = commentInputs[projectId]?.trim();
+    if (!text) return;
+    await addComment(projectId, userProfile.userId, text);
+    setCommentInputs(prev => ({ ...prev, [projectId]: "" }));
+    await refreshProjects();
+    setLocalProjects(prev => prev.map(p => {
+        if (p.projectId !== projectId) return p;
+        const newComment = {
+            commentId: `temp-${Date.now()}`,  // ✅ only used as React key, never sent to DB
+            body: text,
+            users: { username: userProfile.username }
+        };
+        return { ...p, comments: [...(p.comments || []), newComment] };
+    }));
+}
 
     function loadMoreComments(projectId) {
         setVisibleComments(prev => ({ ...prev, [projectId]: (prev[projectId] || 5) + 5 }));

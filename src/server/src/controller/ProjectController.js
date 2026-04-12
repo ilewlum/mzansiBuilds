@@ -12,7 +12,7 @@ export default class ProjectController{
         try {
             const { userId, title, description, stage, visibility, techStack, status, support, createdAt } = req.body;
             const newProject = Project.createProject({ userId, title, description, support ,techStack , stage, visibility, status, createdAt});
-            const project = await this.projectService.createProject(newProject.toJSON());
+            const project = await this.projectService.createProject(newProject.toJSON(), req.supabase);
             res.status(201).json(project);
         } catch (err) {
             console.log(err)
@@ -35,7 +35,7 @@ export default class ProjectController{
                 techStack,
                 status,
                 support
-            });
+            }, req.supabase);
 
             res.json(project);
         } catch (err) {
@@ -48,7 +48,7 @@ export default class ProjectController{
     getProjectById = async (req, res) => {
         try {
             const { id } = req.params;
-            const project = await this.projectService.getProjectById(id);
+            const project = await this.projectService.getProjectById(id, req.supabase);
             res.json(project);
         } catch (err) {
             res.status(500).json({ error: err.message });
@@ -59,7 +59,7 @@ export default class ProjectController{
     getProjectByUserId = async (req, res) => {
         try {
             const { id } = req.params;
-            const project = await this.projectService.getProjectsByUserId(id);
+            const project = await this.projectService.getProjectsByUserId(id, req.supabase);
             res.json(project);
         } catch (err) {
             console.log(err.message);
@@ -83,7 +83,7 @@ export default class ProjectController{
     deleteProject = async (req, res) => {
         try {
             const { id } = req.params;
-            await this.projectService.deleteProject(id);
+            await this.projectService.deleteProject(id, req.supabase);
             res.status(204).send();
         } catch (err) {
             res.status(500).json({ error: err.message });
