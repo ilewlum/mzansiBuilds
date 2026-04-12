@@ -1,0 +1,38 @@
+/* AvatarDrawer.css */
+
+.avatar-drawer {
+  position: fixed;
+  top: 0;
+  right: -300px; /* hidden off screen */
+  width: 300px;
+  height: 50%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background: rgb(225, 223, 223);
+  transition: right 0.3s ease;
+  z-index: 1000;
+}
+
+.avatar-drawer.open {
+  right: 0; /* slide in */
+}
+
+.avatar-drawer-content {
+  padding: 20px;
+  color: black;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.logout-btn {
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+}

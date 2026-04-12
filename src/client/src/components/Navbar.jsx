@@ -7,10 +7,12 @@ import "./Navbar.css";
 import { useUser } from "../context/UserContext";
 import { useProject } from "../context/ProjectContext";
 import NotificationDrawer from "./NotificationDrawer";
+import AvatarDrawer from "./AvatarDrawer";
 
 export default function Navbar() 
 { 
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [avatarOpen, setAvatarOpen] = useState(false);
     const { userProfile } = useUser();
     const { userProjects} = useProject()
     const navigate = useNavigate();
@@ -28,13 +30,22 @@ export default function Navbar()
                 <button className="nav-btn" onClick={() => setDrawerOpen(true)} >
                     <FaBell />Notifications
                 </button> 
-                <div className="avatar">{avatarHelper(userProfile?.username)}</div>  
+                <div 
+                    className="user-avatar" 
+                    onClick={() => setAvatarOpen(true)}
+                    >
+                    {avatarHelper(userProfile?.username)}
+                </div>  
             </nav> 
 
             <NotificationDrawer
                 open={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
                 projects={userProjects}
+            />
+            <AvatarDrawer
+                open={avatarOpen}
+                onClose={() => setAvatarOpen(false)}
             />
         </>
         

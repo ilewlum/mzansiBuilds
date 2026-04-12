@@ -41,8 +41,9 @@ export default class ProjectRepo {
     async getByUserId(userId) {
         const { data, error } = await this.supabase
             .from("projects")
-            .select("*")
-            .eq("userId", userId);
+            .select("projectId, users(userId, username), title, description, stage, visibility, techStack, status, support, createdAt, milestones(milestoneId, title, description),collaborations(collaborationId, title, status, users(userId, username)) ")
+            .eq("userId", userId)
+            .order("createdAt", { ascending: false });
         if (error) throw error;
         return data;
     }
@@ -51,8 +52,8 @@ export default class ProjectRepo {
     async getPublic(){
         const { data, error } = await this.supabase            
             .from("projects")
-            .select("projectId,userId,title, description, stage, visibility, techStack,status,support, users(username), createdAt, comments( commentId, body, createdAt, users(username)), milestones(milestoneId, title, description ), collaborations(collaborationId, title, status, users(userId, username))")
-            //.eq("visibility", "PUBLIC")
+            .select("projectId, users(userId,username), title, description, stage, visibility, techStack, status, support, createdAt, comments( commentId, body, createdAt, users(username)), milestones(milestoneId, title, description ), collaborations(collaborationId, title, status, users(userId, username))")
+            .eq("visibility", "PUBLIC")
             .order("createdAt", { ascending: false })
             .order("createdAt", { foreignTable: "comments", ascending: false })
         if (error) throw error;

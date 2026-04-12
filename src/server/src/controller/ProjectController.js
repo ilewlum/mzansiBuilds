@@ -59,9 +59,10 @@ export default class ProjectController{
     getProjectByUserId = async (req, res) => {
         try {
             const { id } = req.params;
-            const project = await this.projectService.getProjectByUserId(id);
+            const project = await this.projectService.getProjectsByUserId(id);
             res.json(project);
         } catch (err) {
+            console.log(err.message);
             res.status(500).json({ error: err.message });
         }
     };

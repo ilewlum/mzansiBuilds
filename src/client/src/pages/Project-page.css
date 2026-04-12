@@ -161,6 +161,12 @@ input, select, textarea { font-family: var(--font-body); }
   margin-bottom: 10px;
 }
  
+.project-card__header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+ 
 .project-card__title {
   font-family: var(--font-display);
   font-size: 1.22rem;
@@ -174,8 +180,8 @@ input, select, textarea { font-family: var(--font-body); }
   font-style: italic;
   letter-spacing: 0.01em;
 }
-.status--progress { color: var(--status-progress); }
-.status--planning { color: var(--status-planning); }
+.status--progress  { color: var(--status-progress); }
+.status--planning  { color: var(--status-planning); }
 .status--completed { color: var(--status-completed); }
  
 .project-card__desc {
@@ -185,18 +191,17 @@ input, select, textarea { font-family: var(--font-body); }
   margin-bottom: 12px;
 }
  
-.project-card__stack {
+.project-card__stack,
+.project-card__support {
   font-size: 0.82rem;
   color: var(--text-muted);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   font-family: var(--font-mono);
   letter-spacing: 0.02em;
 }
  
 /* ── Milestones ── */
-.milestones {
-  margin-bottom: 18px;
-}
+.milestones { margin-bottom: 18px; }
  
 .milestones__label {
   font-size: 0.82rem;
@@ -225,7 +230,6 @@ input, select, textarea { font-family: var(--font-body); }
   font-size: 0.80rem;
   font-style: italic;
   color: var(--text-secondary);
-  padding-left: 0;
   line-height: 1.5;
   transition: color 0.15s;
 }
@@ -234,6 +238,17 @@ input, select, textarea { font-family: var(--font-body); }
   color: var(--text-muted);
   text-decoration: line-through;
   text-decoration-color: var(--green-mid);
+}
+ 
+.milestone__title {
+  font-weight: 600;
+  font-style: normal;
+  color: var(--text-primary);
+}
+ 
+.milestone__desc {
+  font-style: italic;
+  color: var(--text-muted);
 }
  
 /* ── Card Footer ── */
@@ -277,6 +292,26 @@ input, select, textarea { font-family: var(--font-body); }
   flex-shrink: 0;
   border: 2px solid rgba(255,255,255,0.8);
   box-shadow: 0 1px 4px rgba(60,100,30,0.18);
+}
+ 
+/* ── Card action buttons (edit / delete) ── */
+.project-card__edit-btn,
+.project-card__delete-btn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.project-card__edit-btn:hover,
+.project-card__delete-btn:hover {
+  background: var(--green-dark);
+  color: #fff;
+  border-color: var(--green-dark);
 }
  
 /* ── Modal ── */
@@ -383,65 +418,4 @@ input, select, textarea { font-family: var(--font-body); }
   .project-card { padding: 18px 16px; }
   .milestones__grid { grid-template-columns: 1fr; }
   .project-card__footer { flex-direction: column; align-items: flex-start; gap: 10px; }
-}
- 
-/* ── Milestone text ── */
-.milestone__title {
-  font-weight: 600;
-  font-style: normal;
-  color: var(--text-primary);
-}
- 
-.milestone__desc {
-  font-style: italic;
-  color: var(--text-muted);
-}
- 
-/* ── Support ── */
-.project-card__support {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-  font-family: var(--font-mono);
-}
- 
-/* ── Card edit button ── */
-.project-card__header-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
- 
-.project-card__edit-btn {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  padding: 3px 10px;
-  border: 1.5px solid var(--card-border);
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-.project-card__edit-btn:hover {
-  background: var(--green-dark);
-  color: #fff;
-  border-color: var(--green-dark);
-}
-
-.project-card__delete-btn {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  padding: 3px 10px;
-  border: 1.5px solid var(--card-border);
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-.project-card__delete-btn:hover {
-  background: var(--green-dark);
-  color: #fff;
-  border-color: var(--green-dark);
 }

@@ -2,7 +2,15 @@
 export async function getPublicProjects() {
   const response = await fetch("/api/projects");
   if (!response.ok) {
-    throw new Error("Failed to fetch projects");
+    throw new Error("Failed to fetch public projects");
+  }
+  return response.json();
+}
+
+export async function getUserProjects(UserId) {
+  const response = await fetch(`/api/projects/user/${UserId}`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch User projects");
   }
   return response.json();
 }
