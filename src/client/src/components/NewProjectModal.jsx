@@ -1,6 +1,6 @@
 // ─── NewProjectModal.jsx ──────────────────────────────────────────────────────
 import { useState } from "react";
-import { addMilestone } from "../services/milestone-api";
+import { addMilestone, deleteMilestone} from "../services/milestone-api";
 import "./NewProjectModal.css";
  
 const MAX_MILESTONES = 10;
@@ -12,6 +12,7 @@ const MAX_MILESTONES = 10;
  
 export default function NewProjectModal({ onClose, onSubmit, initialData }) {
   const isEditing = Boolean(initialData);
+  const [removedMilestoneIds, setRemovedMilestoneIds] = useState([]);
  
   const [form, setForm] = useState({
     title:       initialData?.title       ?? "",

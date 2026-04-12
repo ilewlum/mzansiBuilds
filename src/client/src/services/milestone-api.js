@@ -26,7 +26,7 @@ export async function updateMilestone(milestoneId, description)
 {
     try
     {
-        const response = await fetch(`/api/comments/update/${milestoneId}`,
+        const response = await fetch(`/api/milestones/update/${milestoneId}`,
         {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -44,11 +44,11 @@ export async function updateMilestone(milestoneId, description)
     }
 }
 
-export async function deleteComment(milestoneId) {
+export async function deleteMilestone(milestoneId) {
     console.log(milestoneId)
     try
     {
-        const response = await fetch(`/api/comments/delete/${milestoneId}`,
+        const response = await fetch(`/api/milestones/delete/${milestoneId}`,
         {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },

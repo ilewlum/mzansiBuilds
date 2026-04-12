@@ -48,7 +48,7 @@ export async function updateCollaboration(collaborationId, status)
 export async function deleteCollaboration(collaborationId) {
     try
     {
-        const response = await fetch(`/api/comments/delete/${collaborationId}`,
+        const response = await fetch(`/api/collaborations/delete/${collaborationId}`,
         {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
