@@ -1,4 +1,7 @@
 // project-api.js - API calls related to projects
+
+import { getAccessToken } from "./user-api";
+
 export async function getPublicProjects() {
   const response = await fetch("/api/projects");
   if (!response.ok) {
@@ -8,7 +11,10 @@ export async function getPublicProjects() {
 }
 
 export async function getUserProjects(UserId) {
-  const response = await fetch(`/api/projects/user/${UserId}`);
+  const token = await getAccessToken()
+  const response = await fetch(`/api/projects/user/${UserId}`,{
+    headers : {Authorization : `Bearer ${token}`}
+  });
   if (!response.ok) {
     throw new Error("Failed to fetch User projects");
   }
@@ -18,9 +24,12 @@ export async function getUserProjects(UserId) {
 // FIX: added support parameter to match the form field collected in NewProjectModal
 export async function addProject(userId, title, description,support, techStack, stage, visibility, status) {
   try {
+    const token = await getAccessToken();
     const response = await fetch("api/projects/add", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json",
+                  Authorization : `Bearer ${token}`
+       },
       body: JSON.stringify({ title, userId, description, stage, visibility, techStack, status, support }),
     });
  
@@ -37,12 +46,15 @@ export async function addProject(userId, title, description,support, techStack, 
 export async function updateProject(projectId, title, description, support, techStack, stage, visibility, status)
 {
     console.log("updated projectId", projectId)
+    const token = await getAccessToken();
     try
     {
         const response = await fetch(`/api/projects/update/${projectId}`,
         {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",
+                        Authorization : `Bearer ${token}`
+             },
             body: JSON.stringify({ title, description, stage, visibility, techStack, status, support }),
         });
 
@@ -59,12 +71,15 @@ export async function updateProject(projectId, title, description, support, tech
 
 export async function deleteProject(projectId) {
     console.log(projectId)
+    const token = await getAccessToken();
     try
     {
         const response = await fetch(`/api/projects/delete/${projectId}`,
         {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",
+                       Authorization : `Bearer ${token}`
+             },
             body: JSON.stringify({}),
         });
 

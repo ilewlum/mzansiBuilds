@@ -5,6 +5,7 @@ import UserController from "../controller/UserController.js";
 import UserService from "../service/UserService.js";
 import UserRepo from "../Repository/UserRepo.js";
 import supabase from "../config/supabaseClient.js";
+import { requireAuth } from "../middleware/AuthMiddleware.js"
 
 const router = express.Router();
 
@@ -14,10 +15,10 @@ const userService = new UserService(userRepo);
 const userController = new UserController(userService);
 
 // routes
-router.post("/add", userController.createUser);
-router.get("/:id", userController.getUserById);
-router.get("/", userController.getAllUsers);
-router.put("/update/:id", userController.updateUser);
-router.delete("/delete/:id", userController.deleteUser);
+router.post("/add", requireAuth ,userController.createUser);
+router.get("/:id",userController.getUserById);
+router.get("/", requireAuth ,userController.getAllUsers);
+router.put("/update/:id", requireAuth ,userController.updateUser);
+router.delete("/delete/:id", requireAuth ,userController.deleteUser);
 
 export default router;

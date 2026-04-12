@@ -1,14 +1,17 @@
-
+import { getAccessToken } from "./user-api";
 
 export async function addCollaboration(projectId, requestingUserId, title, message)
 {
     console.log(projectId, requestingUserId, title, message);
     try
     {
+        const token = await getAccessToken();
         const response = await fetch("api/collaborations/add" ,
         {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",
+                        Authorization : `Bearer ${token}`
+             },
             body: JSON.stringify({ projectId, requestingUserId, title, message }),
         });
 
@@ -27,10 +30,13 @@ export async function updateCollaboration(collaborationId, status)
     console.log(collaborationId, status)
     try
     {
+        const token = await getAccessToken();
         const response = await fetch(`/api/collaborations/update/${collaborationId}`,
         {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",
+                        Authorization : `Bearer ${token}`
+             },
             body: JSON.stringify({ status }),
         });
 
@@ -48,10 +54,13 @@ export async function updateCollaboration(collaborationId, status)
 export async function deleteCollaboration(collaborationId) {
     try
     {
+        const token = await getAccessToken();
         const response = await fetch(`/api/collaborations/delete/${collaborationId}`,
         {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",
+                        Authorization : `Bearer ${token}`
+             },
             body: JSON.stringify({}),
         });
 

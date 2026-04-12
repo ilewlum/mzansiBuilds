@@ -1,14 +1,17 @@
-
+import { getAccessToken } from "./user-api";
 
 export async function addMilestone(projectId, title, description)
 {
     console.log(projectId, title, description)
     try
     {
+        const token = await getAccessToken();
         const response = await fetch("api/milestones/add" ,
         {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,
+                        Authorization : `Bearer ${token}`
+            },
             body: JSON.stringify({ projectId, title, description }),
         });
 
@@ -26,10 +29,13 @@ export async function updateMilestone(milestoneId, description)
 {
     try
     {
+        const token = await getAccessToken();
         const response = await fetch(`/api/milestones/update/${milestoneId}`,
         {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,
+                        Authorization : `Bearer ${token}`
+            },
             body: JSON.stringify({ description }),
         });
 
@@ -48,10 +54,13 @@ export async function deleteMilestone(milestoneId) {
     console.log(milestoneId)
     try
     {
+        const token = await getAccessToken();
         const response = await fetch(`/api/milestones/delete/${milestoneId}`,
         {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",
+                        Authorization : `Bearer ${token}`
+             },
             body: JSON.stringify({}),
         });
 
