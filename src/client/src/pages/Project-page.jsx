@@ -238,7 +238,7 @@ export default function ProjectsPage() {
             <option value="All">All stages</option>
             <option value="IN_PROGRESS">In Progress</option>
             <option value="PLANNING">Planning</option>
-            <option value="COMPLETED">Completed</option>
+            <option value="COMPLETE">Complete</option>
           </select>
           <select className="toolbar__select" value={sourceFilter} onChange={(e) => setSourceFilter(e.target.value)}>
             <option value="All">All projects</option>

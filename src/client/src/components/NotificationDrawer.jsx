@@ -1,47 +1,52 @@
 import { useState } from "react";
 import "./NotificationDrawer.css";
-import { updateCollaboration } from "../services/collaboration-api"; 
+import { updateCollaboration } from "../services/collaboration-api";
 import { useProject } from "../context/ProjectContext";
-const STATUS_TABS = ["PENDING", "ACCEPTED", "REJECTED"];
- 
+import { useUser } from "../context/UserContext";
+
+const STATUS_TABS = ["NOTIFICATIONS", "ACCEPTED", "REJECTED"];
+
 const TAB_LABELS = {
-  PENDING: "pending",
+  NOTIFICATIONS: "notifications",
   ACCEPTED: "accepted",
   REJECTED: "declined",
 };
- 
+
 const TAB_EMPTY = {
-  PENDING: "No pending collaboration requests.",
+  NOTIFICATIONS: "No notifications yet.",
   ACCEPTED: "No accepted collaborations yet.",
   REJECTED: "No declined requests.",
 };
- 
+
 function Avatar({ initial }) {
   return <div className="drawer-avatar">{initial?.toUpperCase()}</div>;
 }
- 
+
 function CollaborationCard({ collab, status, onAccept, onReject }) {
-  const username = collab.users?.username ?? "unknown";
+  const username = collab.users.username ?? "unknown";
   const initial = username[0];
- 
+
+  const badgeStatus =
+    status === "NOTIFICATIONS" ? collab.status : status;
+
   return (
-    <div className={`collab-card collab-card--${status.toLowerCase()}`}>
+    <div className={`collab-card collab-card--${collab.status.toLowerCase()}`}>
       <div className="collab-card__top">
         <Avatar initial={initial} />
         <div className="collab-card__meta">
           <span className="collab-card__username">{username}</span>
           <span className="collab-card__title">{collab.title}</span>
         </div>
-        <span className={`collab-card__badge badge--${status.toLowerCase()}`}>
-          {TAB_LABELS[status]}
+        <span className={`collab-card__badge badge--${badgeStatus.toLowerCase()}`}>
+          {TAB_LABELS[badgeStatus] ?? badgeStatus.toLowerCase()}
         </span>
       </div>
- 
+
       {collab.message && (
         <p className="collab-card__message">"{collab.message}"</p>
       )}
- 
-      {status === "PENDING" && (
+
+      {status === "NOTIFICATIONS" && collab.status === "PENDING" && (
         <div className="collab-card__actions">
           <button
             className="collab-btn collab-btn--accept"
@@ -60,50 +65,72 @@ function CollaborationCard({ collab, status, onAccept, onReject }) {
     </div>
   );
 }
- 
+
 export default function NotificationDrawer({ open, onClose, projects = [] }) {
-  const [activeTab, setActiveTab] = useState("PENDING");
+  const [activeTab, setActiveTab] = useState("NOTIFICATIONS");
   const { refreshProjects} = useProject();
- 
-  // Flatten all collaborations from all projects, attach project title
+  const { userProfile } = useUser();
+
   const allCollabs = projects.flatMap((project) =>
     (project.collaborations ?? []).map((c) => ({
       ...c,
       projectTitle: project.title,
     }))
   );
- 
-  const filtered = allCollabs.filter((c) => c.status === activeTab);
- 
+  
+
+  const getFiltered = (tab) => {
+    if (tab === "NOTIFICATIONS") {
+      return allCollabs
+        .filter((c) => (c.status === "PENDING" || c.status === "ACCEPTED" || c.status === "REJECTED") &&( c.requestingUserId !== userProfile.userId)
+        )
+        .sort((a, b) => {
+          if (a.status === "PENDING" && b.status !== "PENDING") return -1;
+          if (a.status !== "PENDING" && b.status === "PENDING") return 1;
+          return 0;
+        });
+    }
+    return allCollabs.filter((c) => c.status === tab);
+  };
+
+  const filtered = getFiltered(activeTab);
+
+  const getCount = (tab) => {
+    if (tab === "NOTIFICATIONS") {
+      return allCollabs.filter((c) =>
+        c.status === "PENDING" ||
+        c.status === "ACCEPTED" ||
+        c.status === "REJECTED"
+      ).length;
+    }
+    return allCollabs.filter((c) => c.status === tab).length;
+  };
+
   async function handleAccept(collaborationId) {
-    // Replace with real backend call
     await updateCollaboration(collaborationId, "ACCEPTED");
     await refreshProjects();
   }
- 
+
   async function handleReject(collaborationId) {
-    // Replace with real backend call
     await updateCollaboration(collaborationId, "REJECTED");
     await refreshProjects();
   }
- 
+
   return (
     <>
       {open && <div className="drawer-overlay" onClick={onClose} />}
- 
+
       <div className={`drawer ${open ? "open" : ""}`}>
-        {/* Header */}
         <div className="drawer-header">
           <h3 className="drawer-header__title">notifications</h3>
           <button className="drawer-header__close" onClick={onClose}>
             ✕
           </button>
         </div>
- 
-        {/* Tab Bar */}
+
         <div className="drawer-tabs">
           {STATUS_TABS.map((tab) => {
-            const count = allCollabs.filter((c) => c.status === tab).length;
+            const count = getCount(tab);
             return (
               <button
                 key={tab}
@@ -120,10 +147,9 @@ export default function NotificationDrawer({ open, onClose, projects = [] }) {
             );
           })}
         </div>
- 
+
         <div className="drawer-divider" />
- 
-        {/* Content */}
+
         <div className="drawer-content">
           {filtered.length === 0 ? (
             <p className="drawer-empty">{TAB_EMPTY[activeTab]}</p>
@@ -133,8 +159,8 @@ export default function NotificationDrawer({ open, onClose, projects = [] }) {
                 key={collab.collaborationId ?? i}
                 collab={collab}
                 status={activeTab}
-                onAccept={() =>handleAccept(collab.collaborationId)}
-                onReject={() =>handleReject(collab.collaborationId)}
+                onAccept={() => handleAccept(collab.collaborationId)}
+                onReject={() => handleReject(collab.collaborationId)}
               />
             ))
           )}

@@ -11,7 +11,7 @@ export default class ProjectRepo {
 
     // Adds a new project to the database.
     async createProject(project, client) {
-        const { data, error } = this.getClient(client)
+        const { data, error } = await this.getClient(client)
             .from("projects")
             .insert([{
                 projectId: project.projectId,
@@ -27,6 +27,7 @@ export default class ProjectRepo {
             .select()
             .single();
         if (error) throw error;
+        console.log(error)
         return data;
     }
 
@@ -45,7 +46,7 @@ export default class ProjectRepo {
     async getByUserId(userId, client) {
         const { data, error } = await this.getClient(client)
             .from("projects")
-            .select("projectId, users(userId, username), title, description, stage, visibility, techStack, status, support, createdAt, milestones(milestoneId, title, description),collaborations(collaborationId, title, status, users(userId, username)) ")
+            .select("projectId, users(userId, username), title, description, stage, visibility, techStack, status, support, createdAt, milestones(milestoneId, title, description), collaborations(collaborationId, title, status, users!collaborations_requestingUserId_fkey(userId, username))")
             .eq("userId", userId)
             .order("createdAt", { ascending: false });
         if (error) throw error;
@@ -56,11 +57,12 @@ export default class ProjectRepo {
     async getPublic(){
         const { data, error } = await this.supabase            
             .from("projects")
-            .select("projectId, users(userId,username), title, description, stage, visibility, techStack, status, support, createdAt, comments( commentId, body, createdAt, users(username)), milestones(milestoneId, title, description ), collaborations(collaborationId, title, status, users(userId, username))")
+            .select("projectId, users(userId,username), title, description, stage, visibility, techStack, status, support, createdAt, comments(commentId, body, createdAt, users(username)), milestones(milestoneId, title, description), collaborations(collaborationId, requestingUserId, title, status, users!collaborations_requestingUserId_fkey(userId, username))")
             .eq("visibility", "PUBLIC")
             .order("createdAt", { ascending: false })
             .order("createdAt", { foreignTable: "comments", ascending: false })
         if (error) throw error;
+        //console.log(JSON.stringify(data, null, 2));
         return data;
     }
 
@@ -86,6 +88,7 @@ export default class ProjectRepo {
 
     // Deletes a project from the database based on its unique identifier.
     async delete(projectId, client) {
+        console.log("Repo deleting project: id ", projectId)
         const { data, error } = await this.getClient(client)
             .from("projects")
             .delete()
@@ -93,6 +96,7 @@ export default class ProjectRepo {
             .select()
             .single();
         if (error) throw error;
+        console.log(error)
         return data;
     }
 }

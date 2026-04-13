@@ -39,8 +39,6 @@ export default class UserRepo {
       console.log(error)
       throw error;
     }
-    console.log("Done")
-    console.log(data)
     return data;
   }
 

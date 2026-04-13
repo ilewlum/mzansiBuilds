@@ -10,12 +10,14 @@ export default class ProjectController{
     // Creates a new project with the provided details and sends the created project as a JSON response with a 201 status code.
     createProject = async (req, res) => {
         try {
+            console.log("controller hit")
             const { userId, title, description, stage, visibility, techStack, status, support, createdAt } = req.body;
             const newProject = Project.createProject({ userId, title, description, support ,techStack , stage, visibility, status, createdAt});
             const project = await this.projectService.createProject(newProject.toJSON(), req.supabase);
             res.status(201).json(project);
+            console.log("Controller Layer - project created:", project)
         } catch (err) {
-            console.log(err)
+            console.log("error:",err)
             res.status(500).json({ error: err.message });
         }
     };
@@ -71,7 +73,7 @@ export default class ProjectController{
     getAllPublicProjects = async (req, res) => {
         try {
             const projects = await this.projectService.getAllPublicProjects();
-            console.log(projects)
+            console.log( "project controller",JSON.stringify(projects, null, 2));
             res.json(projects);
         } catch (err) {
             console.log(err);
@@ -87,6 +89,7 @@ export default class ProjectController{
             res.status(204).send();
         } catch (err) {
             res.status(500).json({ error: err.message });
+            console.log(err.message);
         }
     };
 }

@@ -2,7 +2,6 @@ import { getAccessToken } from "./user-api";
 
 export async function addComment(projectId, userId, body)
 {
-    console.log(projectId, userId, body)
     try
     {
         const token = await getAccessToken();
@@ -27,7 +26,6 @@ export async function addComment(projectId, userId, body)
 
 export async function updateComment(commentId, body)
 {
-    console.log(commentId, body)
     try
     {
         const token = await getAccessToken();
@@ -42,7 +40,6 @@ export async function updateComment(commentId, body)
 
         if (!response.ok) throw new Error("Failed to update comment");
         const result = await response.json();
-        console.log("comment updated:", result);
         return result;
     } catch (error) 
     {
@@ -52,7 +49,6 @@ export async function updateComment(commentId, body)
 }
 
 export async function deleteComment(commentId) {
-    console.log(commentId)
     try
     {
         const token = await getAccessToken();

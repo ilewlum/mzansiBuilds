@@ -11,13 +11,13 @@
   z-index: 200;
   display: flex;
   flex-direction: column;
-  font-family: inherit; /* inherits from project-page */
+  font-family: inherit;
 }
- 
+
 .drawer.open {
   right: 0;
 }
- 
+
 .drawer-overlay {
   position: fixed;
   top: 60px;
@@ -27,7 +27,7 @@
   background: rgba(0, 0, 0, 0.25);
   z-index: 150;
 }
- 
+
 /* ── Header ────────────────────────────────────────────────── */
 .drawer-header {
   display: flex;
@@ -35,7 +35,7 @@
   align-items: center;
   padding: 18px 20px 14px;
 }
- 
+
 .drawer-header__title {
   font-size: 0.85rem;
   font-weight: 600;
@@ -44,7 +44,7 @@
   color: #111;
   margin: 0;
 }
- 
+
 .drawer-header__close {
   background: none;
   border: none;
@@ -55,19 +55,19 @@
   border-radius: 4px;
   transition: background 0.15s;
 }
- 
+
 .drawer-header__close:hover {
   background: #f0f0f0;
   color: #333;
 }
- 
+
 /* ── Tabs ──────────────────────────────────────────────────── */
 .drawer-tabs {
   display: flex;
   gap: 4px;
   padding: 0 16px;
 }
- 
+
 .drawer-tab {
   flex: 1;
   background: none;
@@ -86,16 +86,16 @@
   gap: 6px;
   transition: color 0.15s, border-color 0.15s;
 }
- 
+
 .drawer-tab:hover {
   color: #444;
 }
- 
+
 .drawer-tab--active {
   color: #111;
   border-bottom: 2px solid #111;
 }
- 
+
 /* small count badges on tabs */
 .drawer-tab__badge {
   font-size: 0.65rem;
@@ -104,18 +104,18 @@
   border-radius: 20px;
   color: #fff;
 }
- 
-.tab-badge--pending  { background: #b8860b; }
-.tab-badge--accepted { background: #2e7d32; }
-.tab-badge--rejected { background: #b71c1c; }
- 
+
+.tab-badge--notifications { background: #b8860b; }
+.tab-badge--accepted      { background: #2e7d32; }
+.tab-badge--rejected      { background: #b71c1c; }
+
 /* ── Divider ───────────────────────────────────────────────── */
 .drawer-divider {
   height: 1px;
   background: #ebebeb;
   margin: 0 0 4px;
 }
- 
+
 /* ── Content scroll area ───────────────────────────────────── */
 .drawer-content {
   flex: 1;
@@ -125,7 +125,7 @@
   flex-direction: column;
   gap: 10px;
 }
- 
+
 .drawer-empty {
   font-size: 0.8rem;
   color: #aaa;
@@ -133,7 +133,7 @@
   margin-top: 40px;
   letter-spacing: 0.03em;
 }
- 
+
 /* ── Collaboration card ────────────────────────────────────── */
 .collab-card {
   border: 1px solid #e6e4e4;
@@ -146,24 +146,24 @@
   gap: 10px;
   animation: fadeSlideIn 0.25s ease both;
 }
- 
+
 @keyframes fadeSlideIn {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
- 
+
 /* subtle left accent per status */
 .collab-card--pending  { border-left: 3px solid #d4a017; }
 .collab-card--accepted { border-left: 3px solid #2e7d32; }
 .collab-card--rejected { border-left: 3px solid #b71c1c; }
- 
+
 /* top row: avatar + meta + status badge */
 .collab-card__top {
   display: flex;
   align-items: center;
   gap: 10px;
 }
- 
+
 .drawer-avatar {
   width: 32px;
   height: 32px;
@@ -178,7 +178,7 @@
   flex-shrink: 0;
   letter-spacing: 0.04em;
 }
- 
+
 .collab-card__meta {
   flex: 1;
   display: flex;
@@ -186,7 +186,7 @@
   gap: 2px;
   min-width: 0;
 }
- 
+
 .collab-card__username {
   font-size: 0.78rem;
   font-weight: 700;
@@ -195,7 +195,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
- 
+
 .collab-card__title {
   font-size: 0.72rem;
   color: #777;
@@ -203,8 +203,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
- 
-/* status pill — mirrors project-card status design */
+
+/* status pill */
 .collab-card__badge {
   font-size: 0.65rem;
   font-weight: 600;
@@ -214,11 +214,11 @@
   border-radius: 20px;
   flex-shrink: 0;
 }
- 
+
 .badge--pending  { background: #fff8e1; color: #b8860b; border: 1px solid #f0d070; }
 .badge--accepted { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
 .badge--rejected { background: #ffebee; color: #b71c1c; border: 1px solid #ef9a9a; }
- 
+
 /* optional message quote */
 .collab-card__message {
   font-size: 0.75rem;
@@ -231,13 +231,13 @@
   border-left: 2px solid #ddd;
   line-height: 1.5;
 }
- 
-/* action buttons — mirrors project-card edit/delete style */
+
+/* action buttons */
 .collab-card__actions {
   display: flex;
   gap: 8px;
 }
- 
+
 .collab-btn {
   flex: 1;
   padding: 7px 10px;
@@ -249,23 +249,23 @@
   cursor: pointer;
   transition: background 0.15s, transform 0.1s;
 }
- 
+
 .collab-btn:active { transform: scale(0.97); }
- 
+
 .collab-btn--accept {
   background: rgba(93, 94, 93, 0.55);
   color: #fff;
 }
- 
+
 .collab-btn--accept:hover {
   background: rgba(19, 156, 19, 0.55);
 }
- 
+
 .collab-btn--reject {
   background: rgba(93, 94, 93, 0.55);
   color: #fff;
 }
- 
+
 .collab-btn--reject:hover {
   background: rgba(156, 26, 19, 0.55);
 }

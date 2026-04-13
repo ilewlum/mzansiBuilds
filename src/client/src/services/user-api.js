@@ -66,7 +66,6 @@ export async function addUserProfile(username, bio) {
   const { data: sessionData } = await supabase.auth.getSession();
   const userId = sessionData.session?.user.id;
   const email = sessionData.session?.user.email;
-  console.log("Adding user profile for:", { userId, email, username, bio });
 
   // Attempts to add a user to the  users table in the database, which is used to store additional profile info like username and bio. 
   // This is called after onboarding is completed. If it fails, the error is caught and displayed in the modal.

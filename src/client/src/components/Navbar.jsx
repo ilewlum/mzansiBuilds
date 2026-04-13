@@ -14,8 +14,16 @@ export default function Navbar()
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [avatarOpen, setAvatarOpen] = useState(false);
     const { userProfile } = useUser();
-    const { userProjects} = useProject()
+    const { activeProjects} = useProject()
     const navigate = useNavigate();
+
+    const userProjects = activeProjects
+
+    const pendingCount = userProjects
+        .flatMap(p => p.collaborations ?? [])
+        .filter(c => c.status === "PENDING")
+        .length;
+
     return ( 
         <>
             <nav className="navbar">  
@@ -28,7 +36,13 @@ export default function Navbar()
                     <FaFolder />Projects
                 </button>
                 <button className="nav-btn" onClick={() => setDrawerOpen(true)} >
-                    <FaBell />Notifications
+                    <span className="bell-wrap">
+                        <FaBell />
+                        {pendingCount > 0 && (
+                            <span className="bell-badge">{pendingCount > 99 ? "99+" : pendingCount}
+                            </span>
+                        )}
+                    </span>
                 </button> 
                 <div 
                     className="user-avatar" 

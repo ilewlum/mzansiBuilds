@@ -2,7 +2,6 @@ import { getAccessToken } from "./user-api";
 
 export async function addCollaboration(projectId, requestingUserId, title, message)
 {
-    console.log(projectId, requestingUserId, title, message);
     try
     {
         const token = await getAccessToken();
@@ -17,7 +16,7 @@ export async function addCollaboration(projectId, requestingUserId, title, messa
 
         if (!response.ok) throw new Error("Failed to request collaboration");
         const result = await response.json();
-        console.log("collaboration requested:", result);
+        return result
     } catch (error) 
     {
         console.error("Error requesting collaboration:", error);
@@ -42,7 +41,6 @@ export async function updateCollaboration(collaborationId, status)
 
         if (!response.ok) throw new Error("Failed to update collaboration");
         const result = await response.json();
-        console.log("collaboration updated:", result);
         return result;
     } catch (error) 
     {

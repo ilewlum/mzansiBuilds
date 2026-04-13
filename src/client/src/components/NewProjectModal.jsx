@@ -5,10 +5,6 @@ import "./NewProjectModal.css";
  
 const MAX_MILESTONES = 10;
  
-// Pass `initialData` to open in edit mode:
-//   <NewProjectModal initialData={project} onClose={...} onSubmit={handleEdit} />
-// Leave it undefined to open in create mode:
-//   <NewProjectModal onClose={...} onSubmit={handleCreate} />
  
 export default function NewProjectModal({ onClose, onSubmit, initialData }) {
   const isEditing = Boolean(initialData);

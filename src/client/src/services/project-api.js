@@ -7,7 +7,8 @@ export async function getPublicProjects() {
   if (!response.ok) {
     throw new Error("Failed to fetch public projects");
   }
-  return response.json();
+  const data = await response.json()
+  return data;
 }
 
 export async function getUserProjects(UserId) {
@@ -45,7 +46,6 @@ export async function addProject(userId, title, description,support, techStack, 
 
 export async function updateProject(projectId, title, description, support, techStack, stage, visibility, status)
 {
-    console.log("updated projectId", projectId)
     const token = await getAccessToken();
     try
     {
@@ -70,7 +70,6 @@ export async function updateProject(projectId, title, description, support, tech
 }
 
 export async function deleteProject(projectId) {
-    console.log(projectId)
     const token = await getAccessToken();
     try
     {

@@ -12,13 +12,15 @@ import {useProject } from "../context/ProjectContext";
 
 export default function FeedPage() {
     const [needsOnboarding, setNeedsOnboarding] = useState(false);
-    const [showNewProjectModal, setShowNewProjectModal] = useState(false);
+
     const [checking, setChecking] = useState(true);
     const { userProfile, loadingProfile, refreshProfile } = useUser();
 
-    
+    // project states
+    const [showNewProjectModal, setShowNewProjectModal] = useState(false);
+    // local instance of lgobal projects
     const [localProjects, setLocalProjects] = useState([]);
-    const { activeProjects, refreshProjects, completedProjects, addProject} = useProject();
+    const { activeProjects, completedProjects, addProject} = useProject();
 
     // comment states
     const [openComments, setOpenComments] = useState({});
@@ -31,7 +33,8 @@ export default function FeedPage() {
     const [openCollabs, setOpenCollabs] = useState({});
     const [collabInputs, setCollabInputs] = useState({});
 
-    // collab handlers
+    // ----------------------------------------------------------------------- collab handlers -------------------------------------------------------------------
+    // toggles collabs so they appear and disappear when button is pressed
     function toggleCollab(projectId) {
         setOpenCollabs(prev => ({ ...prev, [projectId]: !prev[projectId] }));
         setOpenComments(prev => ({ ...prev, [projectId]: false }));
@@ -54,8 +57,9 @@ export default function FeedPage() {
         setCollabInputs(prev => ({ ...prev, [projectId]: { title: "", message: "" } }));
         setOpenCollabs(prev => ({ ...prev, [projectId]: false }));
     }
-
-    // comment handlers
+    // --------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------- comment handlers ------------------------------------------------------------------
+    // makes comments appear and disappear when clicked
     async function toggleComments(projectId) {
         setOpenComments(prev => ({ ...prev, [projectId]: !prev[projectId] }));
         setOpenCollabs(prev => ({ ...prev, [projectId]: false }));
@@ -70,7 +74,6 @@ export default function FeedPage() {
     if (!text) return;
     await addComment(projectId, userProfile.userId, text);
     setCommentInputs(prev => ({ ...prev, [projectId]: "" }));
-    await refreshProjects();
     setLocalProjects(prev => prev.map(p => {
         if (p.projectId !== projectId) return p;
         const newComment = {
@@ -81,7 +84,7 @@ export default function FeedPage() {
         return { ...p, comments: [...(p.comments || []), newComment] };
     }));
 }
-
+    // limits number of comments displayed
     function loadMoreComments(projectId) {
         setVisibleComments(prev => ({ ...prev, [projectId]: (prev[projectId] || 5) + 5 }));
     }
@@ -120,6 +123,31 @@ export default function FeedPage() {
         }));
     }
 
+    // -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------  Handler for when onboarding is complete ------------------------
+    
+    //
+    async function handleOnboardingComplete() {
+        await refreshProfile();
+        setNeedsOnboarding(false);
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------- handler for creating a new project -----------------------------------
+    // ── Returns the created project so the modal can attach milestones to it ──
+    async function handleNewProject(form) {
+        try {
+            console.log("handle new project hit");
+            return await addProject(
+                userProfile.userId, form.title, form.description,
+                form.support, form.stack, form.stage, form.visibility, form.status
+            );
+        } catch (error) {
+            console.error("Error adding project:", error);
+        }
+    }
+
+
     // Check if user needs onboarding on mount
     useEffect(() => {
         async function checkOnboarding() {
@@ -138,27 +166,10 @@ export default function FeedPage() {
         checkOnboarding();
     }, []);
 
-    // Handler for when onboarding is complete
-    async function handleOnboardingComplete() {
-        await refreshProfile();
-        setNeedsOnboarding(false);
-    }
-
-    // ── Returns the created project so the modal can attach milestones to it ──
-    async function handleNewProject(form) {
-        try {
-            return await addProject(
-                userProfile.userId, form.title, form.description,
-                form.support, form.stack, form.stage, form.visibility, form.status
-            );
-        } catch (error) {
-            console.error("Error adding project:", error);
-        }
-    }
-
     useEffect(() => {
         setLocalProjects(activeProjects);
     }, [activeProjects]);
+
 
     if (checking || loadingProfile) return null;
 

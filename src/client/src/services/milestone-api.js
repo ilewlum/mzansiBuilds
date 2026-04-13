@@ -2,7 +2,6 @@ import { getAccessToken } from "./user-api";
 
 export async function addMilestone(projectId, title, description)
 {
-    console.log(projectId, title, description)
     try
     {
         const token = await getAccessToken();
@@ -51,7 +50,6 @@ export async function updateMilestone(milestoneId, description)
 }
 
 export async function deleteMilestone(milestoneId) {
-    console.log(milestoneId)
     try
     {
         const token = await getAccessToken();
