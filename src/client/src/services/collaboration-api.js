@@ -1,5 +1,7 @@
+// Collaboration frontend API
 import { getAccessToken } from "./user-api";
 
+// Function to request/add collaboration
 export async function addCollaboration(projectId, requestingUserId, title, message)
 {
     try
@@ -24,6 +26,7 @@ export async function addCollaboration(projectId, requestingUserId, title, messa
     }
 }
 
+// Function to update collaboration status (accept/reject)
 export async function updateCollaboration(collaborationId, status)
 {
     console.log(collaborationId, status)
@@ -49,6 +52,18 @@ export async function updateCollaboration(collaborationId, status)
     }
 }
 
+export async function getCollaborationsById(userId){
+    const token = await getAccessToken()
+    const response = await fetch(`/api/collaborations/user/${userId}`,{
+        headers : {Authorization : `Bearer ${token}`}
+    });
+    if (!response.ok) {
+        throw new Error("Failed to fetch User collaborations");
+    }
+    return response.json();
+}
+
+// Function to delete collaboration
 export async function deleteCollaboration(collaborationId) {
     try
     {

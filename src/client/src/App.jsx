@@ -1,3 +1,5 @@
+// App.jsx
+// Main application component that sets up routing and context providers.
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, Navigate, Outlet } from "react-router-dom";
 import { UserProvider } from "./context/UserProvider.jsx";
@@ -8,6 +10,7 @@ import ProjectsPage from "./pages/Project-page.jsx";
 import Navbar from "./components/Navbar.jsx";
 import { getCurrentUser } from "./services/user-api.js";
 
+// ProtectedRoute component to guard routes that require authentication.
 function ProtectedRoute() {
   const [checking, setChecking] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
@@ -26,6 +29,8 @@ function ProtectedRoute() {
   return <Outlet />;
 }
 
+// Main App component that sets up routing and context providers. 
+// It conditionally renders the Navbar based on the current route.
 export default function App() {
   const location = useLocation();
   const hideNavbar = location.pathname === "/";

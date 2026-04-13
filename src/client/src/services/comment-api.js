@@ -1,5 +1,8 @@
+// frontend api that sends all comment related requests to the backend
 import { getAccessToken } from "./user-api";
 
+// Comment API calls
+// Adds a new comment to a project in the backend
 export async function addComment(projectId, userId, body)
 {
     try
@@ -24,6 +27,7 @@ export async function addComment(projectId, userId, body)
     }
 }
 
+// Updates an existing comment in the backend
 export async function updateComment(commentId, body)
 {
     try
@@ -48,6 +52,7 @@ export async function updateComment(commentId, body)
     }
 }
 
+// Deletes a comment from the backend
 export async function deleteComment(commentId) {
     try
     {

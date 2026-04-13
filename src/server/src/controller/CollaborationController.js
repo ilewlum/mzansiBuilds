@@ -1,3 +1,7 @@
+// Controller for handling HTTP requests related to collaborations, including creating, retrieving, updating, 
+// and deleting collaborations. It interacts with the CollaborationService to perform these operations and 
+// sends appropriate JSON responses back to the client.
+
 import Collaboration from "../model/Collaboration.js"
 
 export default class CollaborationController{
@@ -5,6 +9,7 @@ export default class CollaborationController{
         this.collaborationService = collaborationService;
     }
 
+    // Creates a new collaboration request with the provided details and sends the created collaboration as a JSON response with a 201 status code.
     requestCollaboration = async (req, res) => {
         try{
             const {projectId, requestingUserId, title, message } = req.body;
@@ -18,6 +23,7 @@ export default class CollaborationController{
         }
     };
 
+    // Get a collaboration by its unique identifier and send the collaboration as a JSON response.
     getCollaborationById = async (req, res) => {
         try {
             const { id } = req.params;
@@ -29,6 +35,7 @@ export default class CollaborationController{
         }
     };
 
+    // Get all collaborations for a project by the project's unique identifier and send them as a JSON response.
     getProjectCollaborations = async (req, res) => {
         try {
             const { id } = req.params;
@@ -40,10 +47,11 @@ export default class CollaborationController{
         }
     };
 
+    // Get all collaborations for a user by the user's unique identifier and send them as a JSON response.
     getUserCollaborations = async (req, res) => {
         try {
             const { id } = req.params;
-            const collaboration = await this.collaborationService.getCollaborationByUserId(id, req.supabase);
+            const collaboration = await this.collaborationService.getCollaborationsByUserId(id, req.supabase);
             res.json(collaboration);
         } catch (err) {
             console.log(err)
@@ -51,6 +59,7 @@ export default class CollaborationController{
         }
     };
 
+    // Update a collaboration's status by its unique identifier and send the updated collaboration as a JSON response.
     updateCollaboration = async (req, res) => {
         try {
             const { id } = req.params;
@@ -64,6 +73,7 @@ export default class CollaborationController{
         }
     };
 
+    // Delete a collaboration by its unique identifier and send a 204 No Content response if successful.
     deleteCollaboration = async (req, res) => {
         try {
             const { id } = req.params;

@@ -23,11 +23,9 @@ function Avatar({ initial }) {
 }
 
 function CollaborationCard({ collab, status, onAccept, onReject }) {
-  const username = collab.users.username ?? "unknown";
+  const username = collab.users?.username ?? "unknown";
   const initial = username[0];
-
-  const badgeStatus =
-    status === "NOTIFICATIONS" ? collab.status : status;
+  const badgeStatus = status === "NOTIFICATIONS" ? collab.status : status;
 
   return (
     <div className={`collab-card collab-card--${collab.status.toLowerCase()}`}>
@@ -36,6 +34,7 @@ function CollaborationCard({ collab, status, onAccept, onReject }) {
         <div className="collab-card__meta">
           <span className="collab-card__username">{username}</span>
           <span className="collab-card__title">{collab.title}</span>
+          <span className="collab-card__project">on {collab.projectTitle}</span>
         </div>
         <span className={`collab-card__badge badge--${badgeStatus.toLowerCase()}`}>
           {TAB_LABELS[badgeStatus] ?? badgeStatus.toLowerCase()}
@@ -46,7 +45,7 @@ function CollaborationCard({ collab, status, onAccept, onReject }) {
         <p className="collab-card__message">"{collab.message}"</p>
       )}
 
-      {status === "NOTIFICATIONS" && collab.status === "PENDING" && (
+      {status === "NOTIFICATIONS" && collab.status === "PENDING" && collab._incoming && (
         <div className="collab-card__actions">
           <button
             className="collab-btn collab-btn--accept"
@@ -68,42 +67,67 @@ function CollaborationCard({ collab, status, onAccept, onReject }) {
 
 export default function NotificationDrawer({ open, onClose, projects = [] }) {
   const [activeTab, setActiveTab] = useState("NOTIFICATIONS");
-  const { refreshProjects} = useProject();
+  const { refreshProjects, sentCollaborations } = useProject();
   const { userProfile } = useUser();
 
-  const allCollabs = projects.flatMap((project) =>
-    (project.collaborations ?? []).map((c) => ({
-      ...c,
-      projectTitle: project.title,
-    }))
+  // Incoming: requests made to the logged-in user's own projects
+  const incomingCollabs = projects.flatMap((project) =>
+    (project.collaborations ?? [])
+      .filter((c) => c.requestingUserId !== userProfile?.userId)
+      .map((c) => ({
+        ...c,
+        projectTitle: project.title,
+        _incoming: true,
+      }))
   );
-  
+
+  // Outgoing: requests the logged-in user sent to other projects, that got responded to
+  const outgoingResponded = sentCollaborations
+    .filter((c) => c.status === "ACCEPTED" || c.status === "REJECTED")
+    .map((c) => ({
+      ...c,
+      projectTitle: c.projects?.title ?? "a project",
+      // show the project owner as the "actor" on the card
+      users: c.projects?.users ?? { username: "unknown" },
+      _incoming: false,
+    }));
 
   const getFiltered = (tab) => {
     if (tab === "NOTIFICATIONS") {
-      return allCollabs
-        .filter((c) => (c.status === "PENDING" || c.status === "ACCEPTED" || c.status === "REJECTED") &&( c.requestingUserId !== userProfile.userId)
-        )
-        .sort((a, b) => {
-          if (a.status === "PENDING" && b.status !== "PENDING") return -1;
-          if (a.status !== "PENDING" && b.status === "PENDING") return 1;
-          return 0;
-        });
+      return [
+        ...incomingCollabs.filter((c) => c.status === "PENDING"),
+        ...outgoingResponded,
+      ].sort((a, b) => {
+        if (a.status === "PENDING" && b.status !== "PENDING") return -1;
+        if (a.status !== "PENDING" && b.status === "PENDING") return 1;
+        return 0;
+      });
     }
-    return allCollabs.filter((c) => c.status === tab);
+    if (tab === "ACCEPTED") {
+      return incomingCollabs.filter((c) => c.status === "ACCEPTED");
+    }
+    if (tab === "REJECTED") {
+      return incomingCollabs.filter((c) => c.status === "REJECTED");
+    }
+    return [];
   };
 
   const filtered = getFiltered(activeTab);
 
   const getCount = (tab) => {
     if (tab === "NOTIFICATIONS") {
-      return allCollabs.filter((c) =>
-        c.status === "PENDING" ||
-        c.status === "ACCEPTED" ||
-        c.status === "REJECTED"
-      ).length;
+      return (
+        incomingCollabs.filter((c) => c.status === "PENDING").length +
+        outgoingResponded.length
+      );
     }
-    return allCollabs.filter((c) => c.status === tab).length;
+    if (tab === "ACCEPTED") {
+      return incomingCollabs.filter((c) => c.status === "ACCEPTED").length;
+    }
+    if (tab === "REJECTED") {
+      return incomingCollabs.filter((c) => c.status === "REJECTED").length;
+    }
+    return 0;
   };
 
   async function handleAccept(collaborationId) {

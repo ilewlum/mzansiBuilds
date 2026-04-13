@@ -1,3 +1,5 @@
+// Route definitions for milestone-related endpoints, mapping HTTP requests to MilestoneController methods.
+
 import express from "express"
 import MilestoneController from "../controller/MilestoneController.js"
 import MilestoneService from "../service/MilestoneService.js"

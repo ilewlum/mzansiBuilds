@@ -2,7 +2,9 @@
 
 import { getAccessToken } from "./user-api";
 
+// Fetches all public projects from the backend
 export async function getPublicProjects() {
+
   const response = await fetch("/api/projects");
   if (!response.ok) {
     throw new Error("Failed to fetch public projects");
@@ -11,6 +13,7 @@ export async function getPublicProjects() {
   return data;
 }
 
+// Fetches projects associated with a specific user
 export async function getUserProjects(UserId) {
   const token = await getAccessToken()
   const response = await fetch(`/api/projects/user/${UserId}`,{
@@ -22,7 +25,8 @@ export async function getUserProjects(UserId) {
   return response.json();
 }
  
-// FIX: added support parameter to match the form field collected in NewProjectModal
+
+// Adds a new project to the backend
 export async function addProject(userId, title, description,support, techStack, stage, visibility, status) {
   try {
     const token = await getAccessToken();
@@ -44,6 +48,7 @@ export async function addProject(userId, title, description,support, techStack, 
   }
 }
 
+// Updates an existing project in the backend
 export async function updateProject(projectId, title, description, support, techStack, stage, visibility, status)
 {
     const token = await getAccessToken();
@@ -69,6 +74,7 @@ export async function updateProject(projectId, title, description, support, tech
     }
 }
 
+// Deletes a project from the backend
 export async function deleteProject(projectId) {
     const token = await getAccessToken();
     try

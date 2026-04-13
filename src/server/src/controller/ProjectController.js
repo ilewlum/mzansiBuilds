@@ -73,7 +73,6 @@ export default class ProjectController{
     getAllPublicProjects = async (req, res) => {
         try {
             const projects = await this.projectService.getAllPublicProjects();
-            console.log( "project controller",JSON.stringify(projects, null, 2));
             res.json(projects);
         } catch (err) {
             console.log(err);

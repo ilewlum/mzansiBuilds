@@ -1,3 +1,4 @@
+// Controller for handling HTTP requests related to milestones, including creating, retrieving, updating, and deleting milestones. It interacts with the MilestoneService to perform these operations and sends appropriate JSON responses back to the client.
 import Milestone from "../model/Milestone.js"
 
 export default class MilestoneController{
@@ -5,6 +6,7 @@ export default class MilestoneController{
         this.milestoneService = milestoneService;
     }
 
+    // Creates a new milestone with the provided details and sends the created milestone as a JSON response with a 201 status code.
     createMilestone = async (req, res) => {
         try{
             const {projectId, title, description} = req.body;
@@ -18,6 +20,7 @@ export default class MilestoneController{
         }
     };
 
+    // Get all milestones for a project by the project's unique identifier and send them as a JSON response.
     getMilestoneById = async (req, res) => {
         try {
             const { id } = req.params;
@@ -28,6 +31,7 @@ export default class MilestoneController{
         }
     };
 
+    // Get all milestones for a project
     getMilestoneByProjectId = async (req, res) => {
         try {
             const { id } = req.params;
@@ -38,6 +42,7 @@ export default class MilestoneController{
         }
     };
 
+    //  Update a milestone's description by its unique identifier and send the updated milestone as a JSON response.
     updateMilestone = async (req, res) => {
         try {
             const { id } = req.params;
@@ -53,6 +58,7 @@ export default class MilestoneController{
         }
     };
 
+    // Delete a milestone by its unique identifier and send a 204 No Content response if successful.
     deleteMilestone = async (req, res) => {
         try {
             const { id } = req.params;

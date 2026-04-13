@@ -1,11 +1,15 @@
+// UserProvider.jsx - Provides user profile and authentication state to the app
 import { useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import { getCurrentUser, findUserProfile, handleLogout, handleLogin } from "../services/user-api";
 
+// 
 export function UserProvider({ children }) {
+    // 
     const [userProfile, setUserProfile] = useState(null);
     const [loadingProfile, setLoadingProfile] = useState(true);
 
+    // On mount, check if user is logged in and load their profile
     useEffect(() => {
         async function loadProfile() {
             try {
@@ -23,6 +27,7 @@ export function UserProvider({ children }) {
         loadProfile();
     }, []);
 
+    // Function to refresh the user profile (e.g., after login or profile update)
     async function refreshProfile() {
         try {
             const { userId } = await getCurrentUser();
@@ -39,6 +44,7 @@ export function UserProvider({ children }) {
         await refreshProfile();
     }
 
+    // Handles logout and clears the user profile from context
     async function logout() {
         await handleLogout();
         setUserProfile(null);

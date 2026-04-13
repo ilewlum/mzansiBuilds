@@ -28,6 +28,7 @@ export default class Collaboration{
         return data;
     }
 
+    // Retrieves a collaboration by its unique identifier.
     async getById(collaborationId , client) {
         const { data, error } = await this.getClient(client)
             .from("collaborations")
@@ -38,6 +39,7 @@ export default class Collaboration{
         return data;
     }
 
+    // Retrieves all collaborations associated with a specific project.
     async getByProjectId(projectId, client) {
         const { data, error } = await this.getClient(client)
             .from("collaborations")
@@ -48,16 +50,19 @@ export default class Collaboration{
         return data;
     }
 
+    // Retrieves all collaborations associated with a specific user.
     async getByUserId( userId , client) {
         const { data, error } = await this.getClient(client)
             .from("collaborations")
-            .select("*")
-            .eq("userId", userId)
-            .single();    
+            .select("collaborationId, requestingUserId, title, status, message, projectId, projects(projectId, title, userId, users(userId, username))")
+            .eq("requestingUserId", userId)
+            .order("createdAt", { ascending: false });;    
         if (error) throw error;
+        console.log(data);
         return data;
     }
 
+    // Update an existing collaboration's status in the database by its unique identifier.
     async updateCollaboration(collaborationId, status, client){
         const { data, error } = await this.getClient(client)
             .from("collaborations")
@@ -69,6 +74,7 @@ export default class Collaboration{
         return data;
     }
 
+    // Deletes a collaboration from the database by its unique identifier.
     async delete(collaborationId , client) {
         const { data, error } = await this.getClient(client)
             .from("collaborations")

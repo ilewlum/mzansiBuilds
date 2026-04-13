@@ -1,5 +1,8 @@
+// frontend api that sends all milestone related requests to the backend
 import { getAccessToken } from "./user-api";
 
+// Milestone API calls
+// Adds a new milestone to a project in the backend
 export async function addMilestone(projectId, title, description)
 {
     try
@@ -24,6 +27,7 @@ export async function addMilestone(projectId, title, description)
     }
 }
 
+// Updates an existing milestone in the backend
 export async function updateMilestone(milestoneId, description)
 {
     try
@@ -40,7 +44,6 @@ export async function updateMilestone(milestoneId, description)
 
         if (!response.ok) throw new Error("Failed to update milestone");
         const result = await response.json();
-        console.log("milestone updated:", result);
         return result;
     } catch (error) 
     {
@@ -49,6 +52,7 @@ export async function updateMilestone(milestoneId, description)
     }
 }
 
+// Deletes a milestone from the backend
 export async function deleteMilestone(milestoneId) {
     try
     {

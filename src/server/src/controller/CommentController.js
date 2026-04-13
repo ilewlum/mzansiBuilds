@@ -1,3 +1,6 @@
+// Controller for handling HTTP requests related to comments, including creating, retrieving, updating, 
+// and deleting comments. It interacts with the CommentService to perform these operations and 
+// sends appropriate JSON responses back to the client.
 import Comment from "../model/Comment.js"
 
 export default class CommentController{
@@ -5,6 +8,7 @@ export default class CommentController{
         this.commentService = commentService;
     }
 
+    // Creates a new comment with the provided details and sends the created comment as a JSON response with a 201 status code.
     addComment = async (req, res) => {
         try{
             const {userId, projectId, body } = req.body;
@@ -18,6 +22,7 @@ export default class CommentController{
         }
     };
 
+    // Get a comment by its unique identifier and send the comment as a JSON response.
     getCommentById = async (req, res) => {
         try {
             const { id } = req.params;
@@ -28,6 +33,7 @@ export default class CommentController{
         }
     };
 
+    // Get all comments for a project by the project's unique identifier and send them as a JSON response.
     getCommentByProjectId = async (req, res) => {
         try {
             const { id } = req.params;
@@ -38,6 +44,7 @@ export default class CommentController{
         }
     };
 
+    //  Update a comment's description by its unique identifier and send the updated comment as a JSON response.
     updateComment = async (req, res) => {
         try {
             const { id } = req.params;
@@ -54,6 +61,7 @@ export default class CommentController{
         }
     };
 
+    // Delete a comment by its unique identifier and send a 204 No Content response if successful.
     deleteProject = async (req, res) => {
         try {
             const { id } = req.params;

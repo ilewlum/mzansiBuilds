@@ -47,13 +47,16 @@ export default function FeedPage() {
         }));
     }
 
+    // handler to add a collaboration request to a project
     async function handlePostCollab(projectId) {
         const title = collabInputs[projectId]?.title?.trim();
         const message = collabInputs[projectId]?.message?.trim();
         if (!title || !message) return;
-
+        if (userProfile.userId === localProjects.find(p => p.projectId === projectId)?.users.userId) {
+            alert("You cannot collaborate on your own project!");
+            return;
+        }
         await addCollaboration(projectId, userProfile.userId, title, message);
-
         setCollabInputs(prev => ({ ...prev, [projectId]: { title: "", message: "" } }));
         setOpenCollabs(prev => ({ ...prev, [projectId]: false }));
     }
@@ -69,9 +72,13 @@ export default function FeedPage() {
         setCommentInputs(prev => ({ ...prev, [projectId]: value }));
     }
 
+
     async function handlePostComment(projectId) {
     const text = commentInputs[projectId]?.trim();
-    if (!text) return;
+    if (!text || (userProfile.userId === localProjects.find(p => p.projectId === projectId)?.users.userId)){
+        alert("You cannot comment on your own project!");
+        return;
+    }
     await addComment(projectId, userProfile.userId, text);
     setCommentInputs(prev => ({ ...prev, [projectId]: "" }));
     setLocalProjects(prev => prev.map(p => {

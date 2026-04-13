@@ -12,8 +12,7 @@ export default class CommentRepo{
 
   // Adds a new project to the database.
     async addComment(comment, client) {
-      // ✅ define first
-        const { data, error } = await this.getClient(client)   // ✅ use it here
+        const { data, error } = await this.getClient(client)
         .from("comments")
         .insert([{
             commentId:  comment.commentId,
@@ -24,10 +23,11 @@ export default class CommentRepo{
         .select()
         .single();
 
-    if (error) throw error;
-    return data;
-}
+        if (error) throw error;
+        return data;
+    }
 
+    // Retrieves a comment by its unique identifier.
     async getById(commentId, client) {
         const { data, error } = await this.getClient(client)
             .from("comments")
@@ -38,6 +38,7 @@ export default class CommentRepo{
         return data;
     }
 
+    // Get all comments for a project
     async getByProjectId(projectId, client) {
         const { data, error } = await this.getClient(client)
             .from("comments")
@@ -48,6 +49,7 @@ export default class CommentRepo{
         return data;
     }
 
+    // Update comment description by id
     async updateComment(commentId, body, client){
         const { data, error } = await this.getClient(client)
             .from("comments")
@@ -59,6 +61,7 @@ export default class CommentRepo{
         return data;
     }
 
+    // Deletes a comment from the database by its unique identifier.
     async delete(commentId , client) {
         const { data, error } = await this.getClient(client)
             .from("comments")

@@ -1,7 +1,5 @@
 // Service layer for user-related operations, handling business logic and interactions with the UserRepository.
 
-import User from "../model/User.js";
-
 export default class UserService {
   constructor(userRepo) {
     this.userRepo = userRepo;

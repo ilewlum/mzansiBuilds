@@ -1,3 +1,5 @@
+// Route definitions for comment-related endpoints, mapping HTTP requests to CommentController methods.
+
 import express from "express"
 import { supabaseAdmin } from "../config/supabaseClient.js"
 import CommentController from "../controller/CommentController.js"

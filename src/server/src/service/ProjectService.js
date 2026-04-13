@@ -1,7 +1,5 @@
 // Service layer for project-related operations, handling business logic and interactions with the ProjectRepository.
 
-import Project from "../model/Project.js";
-
 export default class ProjectService {
   constructor(projectRepo) {
     this.projectRepo = projectRepo;

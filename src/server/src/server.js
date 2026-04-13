@@ -4,7 +4,6 @@ import dotenv from 'dotenv'
 import routes from './route/index.js'
 
 dotenv.config()
-
 const app = express()
 
 // Middleware

@@ -1,3 +1,4 @@
+// Route definitions for collaboration-related endpoints, mapping HTTP requests to CollaborationController methods.
 import express from "express"
 import CollaborationController from "../controller/CollaborationController.js"
 import CollaborationService from "../service/CollaborationService.js"
@@ -15,7 +16,7 @@ const collaborationController = new CollaborationController(collaborationService
 router.post("/add", requireAuth ,collaborationController.requestCollaboration);
 router.get("/:id", requireAuth ,collaborationController.getCollaborationById);
 router.get("/projectId/:id", requireAuth ,collaborationController.getProjectCollaborations);
-router.get("/userId/:id", requireAuth ,collaborationController.getUserCollaborations);
+router.get("/user/:id", requireAuth ,collaborationController.getUserCollaborations);
 router.put("/update/:id", requireAuth ,collaborationController.updateCollaboration);
 router.delete("/delete/:id", requireAuth ,collaborationController.deleteCollaboration);
 

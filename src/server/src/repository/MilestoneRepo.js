@@ -27,6 +27,7 @@ export default class MilestoneRepo{
         return data;
     }
 
+    // Retrieves a milestone by its unique identifier.
     async getById(milestoneId , client) {
         const { data, error } = await this.getClient(client)
             .from("milestones")
@@ -37,6 +38,7 @@ export default class MilestoneRepo{
         return data;
     }
 
+    // Retrieves all milestones associated with a specific project.
     async getByProjectId(projectId, client) {
         const { data, error } = await this.getClient(client)
             .from("milestones")
@@ -47,6 +49,7 @@ export default class MilestoneRepo{
         return data;
     }
 
+    // Update an existing milestone's description in the database by its unique identifier.
     async updateMilestone(milestoneId, description, client){
         const { data, error } = await this.getClient(client)
             .from("milestones")
@@ -57,7 +60,7 @@ export default class MilestoneRepo{
         if (error) throw error;
         return data;
     }
-
+    // Deletes a milestone from the database by its unique identifier.
     async delete(milestoneId, client) {
         const { data, error } = await this.getClient(client)
             .from("milestones")

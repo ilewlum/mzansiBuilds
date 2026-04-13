@@ -269,3 +269,11 @@
 .collab-btn--reject:hover {
   background: rgba(156, 26, 19, 0.55);
 }
+
+.collab-card__project {
+  font-size: 0.68rem;
+  color: #aaa;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
