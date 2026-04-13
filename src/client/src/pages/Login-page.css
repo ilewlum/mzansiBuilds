@@ -1,10 +1,12 @@
+@import url('./colors.css');
+
 .login-root {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: rgba(208, 240, 192, 0.853);
+  background-color: var(--bg-primary);
   overflow: hidden;
 }
 
@@ -17,7 +19,7 @@
   min-height: 450px;
   padding: 52px 56px 44px;
 
-  background-color: rgba(247, 247, 247, 0.853);
+  background-color: var( --bg--secondary);
   backdrop-filter: blur(18px);
   border: 1px solid var(--card-border);
   border-radius: 28px;
@@ -97,7 +99,7 @@
   border: 1px solid #ccc;
   border-radius: 15px;
 
-  background-color: rgba(208, 240, 192, 0.853);
+  background-color: var(--bg--primary);
 
   outline: none;
   box-shadow: none;

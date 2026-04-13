@@ -9,7 +9,7 @@ import NewProjectModal from "../components/NewProjectModal";
 import { useUser } from "../context/UserContext";
 import { useProject } from "../context/ProjectContext";
  
-////   ----------------------------------------------------------- Component functions ----------------------------------------------------
+////   --------------------------------------------------------------- Component functions --------------------------------------------------------------------------------
  
 // Shared MilestoneList component — read-only, used in both pages
 function MilestoneList({ milestones }) {
@@ -63,13 +63,16 @@ export default function FeedPage() {
   // collab states
   const [openCollabs, setOpenCollabs] = useState({});
   const [collabInputs, setCollabInputs] = useState({});
- 
-  // ----------------------------------------------------------------------- collab handlers -------------------------------------------------------------------
+  // --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------- collab handlers -------------------------------------------------------------------
+  // --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // function to open and close collab section
   function toggleCollab(projectId) {
     setOpenCollabs(prev => ({ ...prev, [projectId]: !prev[projectId] }));
     setOpenComments(prev => ({ ...prev, [projectId]: false }));
   }
  
+  // function to take in input and assign value
   function handleCollabInput(projectId, field, value) {
     setCollabInputs(prev => ({
       ...prev,
@@ -77,7 +80,9 @@ export default function FeedPage() {
     }));
   }
  
-  async function handlePostCollab(projectId) {
+  // function to validate and add a collaboration request
+  async function handlePostCollab(projectId) 
+  {
     const title = collabInputs[projectId]?.title?.trim();
     const message = collabInputs[projectId]?.message?.trim();
     if (!title || !message) return;
@@ -86,26 +91,34 @@ export default function FeedPage() {
       return;
     }
     await addCollaboration(projectId, userProfile.userId, title, message);
+    // reset value of collaborayion fields to ""
     setCollabInputs(prev => ({ ...prev, [projectId]: { title: "", message: "" } }));
     setOpenCollabs(prev => ({ ...prev, [projectId]: false }));
   }
  
-  // -------------------------------------------------------------------------- comment handlers ------------------------------------------------------------------
+  // --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------- comment handlers ------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // function to open and close comment section 
   async function toggleComments(projectId) {
     setOpenComments(prev => ({ ...prev, [projectId]: !prev[projectId] }));
     setOpenCollabs(prev => ({ ...prev, [projectId]: false }));
   }
  
+  // function to assign value of comment input fields
   async function handleCommentInput(projectId, value) {
     setCommentInputs(prev => ({ ...prev, [projectId]: value }));
   }
  
+  // function to handle and validate a comment
   async function handlePostComment(projectId) {
     const text = commentInputs[projectId]?.trim();
     if (!text || (userProfile.userId === localProjects.find(p => p.projectId === projectId)?.users.userId)) {
       alert("You cannot comment on your own project!");
       return;
     }
+
+    // add comment and reset fields to ""
     await addComment(projectId, userProfile.userId, text);
     setCommentInputs(prev => ({ ...prev, [projectId]: "" }));
     setLocalProjects(prev => prev.map(p => {
@@ -157,13 +170,15 @@ export default function FeedPage() {
     }));
   }
  
-  // ------------------------------------------------------- onboarding handler -----------------------------------------------
+  // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------- onboarding handler ---------------------------------------------------------------------
+  // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
   async function handleOnboardingComplete() {
     await refreshProfile();
     setNeedsOnboarding(false);
   }
  
-  // ------------------------------------------------------- new project handler -----------------------------------------------
+  // ---------------------------------------------------------------------------- new project handler --------------------------------------------------------------------
   async function handleNewProject(form) {
     try {
       return await addProject(
@@ -175,7 +190,8 @@ export default function FeedPage() {
     }
   }
  
-  // ------------------------------------------------------- effects -----------------------------------------------
+  // ------------------------------------------------------------------------------ useEffect functions ------------------------------------------------------------------------------
+  // function to automatically check if a user needs to onBoard at every login
   useEffect(() => {
     async function checkOnboarding() {
       try {
@@ -192,6 +208,7 @@ export default function FeedPage() {
     checkOnboarding();
   }, []);
  
+  // function to reload local projects when ever active projects change 
   useEffect(() => {
     setLocalProjects(activeProjects);
   }, [activeProjects]);
@@ -228,7 +245,9 @@ export default function FeedPage() {
             </div>
           </aside>
  
+          {/* Middle – Scroll panel */}
           <main className="panel-mid">
+            
             {/* New Project bar */}
             <div className="new-project-card">
               <div className="avatar sm">{avatarHelper(userProfile?.username)}</div>

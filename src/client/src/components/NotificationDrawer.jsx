@@ -4,6 +4,9 @@ import { updateCollaboration } from "../services/collaboration-api";
 import { useProject } from "../context/ProjectContext";
 import { useUser } from "../context/UserContext";
 
+// ----------------------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------- Page Defined Constants ----------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------------
 const STATUS_TABS = ["NOTIFICATIONS", "ACCEPTED", "REJECTED"];
 
 const TAB_LABELS = {
@@ -18,10 +21,15 @@ const TAB_EMPTY = {
   REJECTED: "No declined requests.",
 };
 
+// ----------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------- Helper function -------------------------------------------------------
 function Avatar({ initial }) {
   return <div className="drawer-avatar">{initial?.toUpperCase()}</div>;
 }
 
+// ----------------------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------- Component ---------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------------
 function CollaborationCard({ collab, status, onAccept, onReject }) {
   const username = collab.users?.username ?? "unknown";
   const initial = username[0];
@@ -66,10 +74,14 @@ function CollaborationCard({ collab, status, onAccept, onReject }) {
 }
 
 export default function NotificationDrawer({ open, onClose, projects = [] }) {
+  
   const [activeTab, setActiveTab] = useState("NOTIFICATIONS");
   const { refreshProjects, sentCollaborations } = useProject();
   const { userProfile } = useUser();
 
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------- Computed Constants -----------------------------------------------
+  // -------------------------------------------------------------------------------------------------------------------------------
   // Incoming: requests made to the logged-in user's own projects
   const incomingCollabs = projects.flatMap((project) =>
     (project.collaborations ?? [])
@@ -92,6 +104,7 @@ export default function NotificationDrawer({ open, onClose, projects = [] }) {
       _incoming: false,
     }));
 
+  // returns a filtered array of notification objects
   const getFiltered = (tab) => {
     if (tab === "NOTIFICATIONS") {
       return [
@@ -130,11 +143,16 @@ export default function NotificationDrawer({ open, onClose, projects = [] }) {
     return 0;
   };
 
+  //---------------------------------------------------------------------------------------------------------------------------------
+  // -------------------------------------------------------- Handlers -------------------------------------------------------------- 
+  //---------------------------------------------------------------------------------------------------------------------------------
+  // handles updating collaboration request to accepted
   async function handleAccept(collaborationId) {
     await updateCollaboration(collaborationId, "ACCEPTED");
     await refreshProjects();
   }
 
+  // handles updating collaboration request to rejected
   async function handleReject(collaborationId) {
     await updateCollaboration(collaborationId, "REJECTED");
     await refreshProjects();
@@ -144,6 +162,7 @@ export default function NotificationDrawer({ open, onClose, projects = [] }) {
     <>
       {open && <div className="drawer-overlay" onClick={onClose} />}
 
+      {/* ----- Drawer ----- */}
       <div className={`drawer ${open ? "open" : ""}`}>
         <div className="drawer-header">
           <h3 className="drawer-header__title">notifications</h3>
@@ -152,6 +171,7 @@ export default function NotificationDrawer({ open, onClose, projects = [] }) {
           </button>
         </div>
 
+        {/*  Drawer tabs  */}
         <div className="drawer-tabs">
           {STATUS_TABS.map((tab) => {
             const count = getCount(tab);
@@ -174,6 +194,7 @@ export default function NotificationDrawer({ open, onClose, projects = [] }) {
 
         <div className="drawer-divider" />
 
+          {/*  Drawer content with collaboration cards  */}
         <div className="drawer-content">
           {filtered.length === 0 ? (
             <p className="drawer-empty">{TAB_EMPTY[activeTab]}</p>

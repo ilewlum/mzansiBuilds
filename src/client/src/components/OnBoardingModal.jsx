@@ -18,6 +18,9 @@ export default function OnboardingModal({onComplete })
     const [showExitWarning, setShowExitWarning] = useState(false);
     const [loggingOut, setLoggingOut] = useState(false);
 
+    // -------------------------------------------------------------------------------------------------------------------------------
+    //---------------------------------------------------------- Helper methods ------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------
     // Derive initials for avatar preview
     const initials = username.slice(0, 2).toUpperCase() || "?";
 
@@ -36,7 +39,9 @@ export default function OnboardingModal({onComplete })
     const bioOk = bio.trim().length >= BIO_MIN;
     const canSave = usernameOk && bioOk;
 
-    // Handlers
+    // -------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------ Handlers ---------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------
     // Limit input and validate on change
     function handleUsernameChange(e) {
         const val = e.target.value.slice(0, 30);
@@ -75,6 +80,8 @@ export default function OnboardingModal({onComplete })
             setLoggingOut(false);
         }
     }
+
+    // ------------------------------------------------------------------------------------------------------------------------------
 
     // Block browser back / accidental navigation while modal is open
     useEffect(() => {

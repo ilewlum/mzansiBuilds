@@ -3,6 +3,8 @@ import { useState } from "react";
 import { addMilestone, deleteMilestone} from "../services/milestone-api";
 import "./NewProjectModal.css";
  
+// --------------------------------------------------------- Defined Constants -----------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------------
 const MAX_MILESTONES = 10;
  
  
@@ -32,17 +34,22 @@ export default function NewProjectModal({ onClose, onSubmit, initialData }) {
       : []
   );
  
+  // milestone states to handle lifecyle
   const [showMilestoneForm, setShowMilestoneForm] = useState(false);
   const [milestoneInput, setMilestoneInput] = useState({ title: "", message: "" });
   const [isSavingMilestone, setIsSavingMilestone] = useState(false);
  
   const isMilestoneValid = milestoneInput.title.trim() !== "" && milestoneInput.message.trim() !== "";
  
+  // -----------------------------------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------- Handlers ------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------------------------------------------
+  // function to handle submission of a new project
   const handleSubmit = async () => {
     const project = await onSubmit({ ...form });
     const newMilestones = milestones.filter((m) => !m.milestoneId);
  
-    // FIX: In edit mode, onSubmit (updateProject) returns undefined, so fall
+    // In edit mode, onSubmit (updateProject) returns undefined, so fall
     // back to initialData.projectId which is already available in scope.
     const projectId = project?.projectId ?? initialData?.projectId;
  
@@ -62,17 +69,20 @@ export default function NewProjectModal({ onClose, onSubmit, initialData }) {
  
     onClose();
   };
- 
+  
+  // function to set the values of milestone input to ""
   const handleShowMilestoneForm = () => {
     setMilestoneInput({ title: "", message: "" });
     setShowMilestoneForm(true);
   };
  
+
   const handleCancelMilestone = () => {
     setMilestoneInput({ title: "", message: "" });
     setShowMilestoneForm(false);
   };
  
+  // handle add milestone where it is stored locally and added after modal closure
   const handleAddMilestone = () => {
     console.log("triggered");
     if (!isMilestoneValid) return;
@@ -85,6 +95,7 @@ export default function NewProjectModal({ onClose, onSubmit, initialData }) {
     setShowMilestoneForm(false);
   };
  
+  // function removed milestone from the modal and changes are saved after modal closure
   const handleRemoveMilestone = (index) => {
     const milestone = milestones[index];
     if (milestone.milestoneId) {
