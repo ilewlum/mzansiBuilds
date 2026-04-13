@@ -368,6 +368,64 @@
     color: #999;
 }
 
+/* ── Post card milestones (matches Project-page milestone style) ── */
+.post-milestones {
+  margin: 14px 0 4px;
+  padding-top: 14px;
+  border-top: 1px solid var(--card-border);
+  animation: fadeSlideIn 0.18s ease;
+}
+ 
+.post-milestones__label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary, #1a2e0f);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  margin-bottom: 8px;
+  font-style: italic;
+  font-family: 'DM Mono', monospace;
+}
+ 
+.post-milestones__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
+}
+ 
+.post-milestones__col {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+  margin: 0;
+}
+ 
+.post-milestones__col li {
+  font-size: 0.80rem;
+  font-style: italic;
+  color: #3d5c28;
+  line-height: 1.5;
+}
+ 
+.post-milestone__title {
+  font-weight: 600;
+  font-style: normal;
+  color: #1a2e0f;
+}
+ 
+.post-milestone__desc {
+  font-style: italic;
+  color: #6b8a52;
+}
+ 
+@media (max-width: 600px) {
+  .post-milestones__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .load-more-btn {
     background: none;
     border: none;

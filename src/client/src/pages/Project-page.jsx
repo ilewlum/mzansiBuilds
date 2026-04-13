@@ -63,6 +63,36 @@ function MilestoneList({ milestones }) {
   );
 }
  
+// component function which returns the collaborator list within each project card
+// mirrors MilestoneList layout, renders collaborator usernames only
+function CollaboratorList({ collaborations }) {
+  if (!collaborations?.length) return null;
+  const usernames = collaborations
+    .map((c) => c.users?.username)
+    .filter(Boolean);
+  if (!usernames.length) return null;
+ 
+  const half = Math.ceil(usernames.length / 2);
+  const columns = [usernames.slice(0, half), usernames.slice(half)];
+ 
+  return (
+    <div className="milestones">
+      <p className="milestones__label">collaborators :</p>
+      <div className="milestones__grid">
+        {columns.map((col, i) => (
+          <ul key={i} className="milestones__col">
+            {col.map((username, j) => (
+              <li key={j}>
+                <span className="milestone__title">{username}</span>
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+  );
+}
+ 
 // function that returns a project card
 // isCollab controls whether the collab badge shows and Edit/Delete are hidden
 function ProjectCard({ project, index = 0, onEdit, onDelete, isCollab = false }) {
@@ -106,7 +136,9 @@ function ProjectCard({ project, index = 0, onEdit, onDelete, isCollab = false })
       <p className="project-card__desc">{project.description}</p>
       {project.techStack && <p className="project-card__stack">{project.techStack}</p>}
       {project.support && <p className="project-card__support">support needed: {project.support}</p>}
+ 
       {expanded && <MilestoneList milestones={project.milestones} />}
+      {expanded && <CollaboratorList collaborations={project.collaborations} />}
  
       <div className="project-card__footer">
         <span className="project-card__date">created &nbsp; {formatDate(project.createdAt)}</span>
