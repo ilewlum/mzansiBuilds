@@ -16,7 +16,7 @@ progress, and connect with collaborators.
 
 Key constraints driving this decision:
 
-- Solo developer, 6-day delivery window 
+- Solo developer, 9-day delivery window 
 - Must support a real-time live feed, new projects appear without page refresh
 - Must support developer account management with secure auth (SRS FR01)
 - Must support project creation with stage and support required (SRS FR02)
@@ -80,8 +80,6 @@ Key constraints driving this decision:
   denormalisation needed
 - **Single JS/TS ecosystem** across React client and Express server reduces cognitive
   overhead for a solo developer operating under a deadline, improving overall dev time.
-- **Tailwind CSS** allows the green/white/black theme to be configured once in
-  `tailwind.config.js` and enforced consistently across all components
 - Entire stack deployable on free tiers (Supabase) 
 - React ecosystem provides mature testing tooling (Vitest, React Testing Library) needed
   for the test phase on Day 5
@@ -200,6 +198,5 @@ changes would be warranted:
 - Supabase Row Level Security: https://supabase.com/docs/guides/auth/row-level-security
 - Supabase Auth: https://supabase.com/docs/guides/auth
 - React Router v6: https://reactrouter.com/en/main
-- Zod validation: https://zod.dev
 - Express Helmet: https://helmetjs.github.io
 ---
