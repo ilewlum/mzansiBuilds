@@ -164,7 +164,7 @@ VITE_SUPABASE_ANON_KEY=<included in repo>
 - The Supabase project was created exclusively for this assessment.
 - Auth middleware protects most endpoints using Supabase JWT verification.
 - The architecture follows a controller → service → repository pattern for separation of concerns.
-- In a production environment, `.env` files would not be committed and the service role key would be restricted to server-side use only.
+- In a production environment, `.env` files would not be committed and the service role key would be restricted to server-side use only as this is a security risk.
  
 ---
  
