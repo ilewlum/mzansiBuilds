@@ -11,8 +11,6 @@ export default class MilestoneRepo{
 
   // Adds a new milestone to the database.
     async addMilestone( milestone , client) {
-        console.log(milestone);
-        console.log(client);
         const { data, error } = await this.getClient(client)
             .from("milestones")
             .insert([{

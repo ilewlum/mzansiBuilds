@@ -49,7 +49,6 @@ export default class CommentController{
         try {
             const { id } = req.params;
             const { body} = req.body;
-            console.log(id, body);
             const comment = await this.commentService.updateComment(
                 id,
                 body,
