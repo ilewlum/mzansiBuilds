@@ -2,21 +2,10 @@
  
 A platform that helps developers build publicly and keep up with what other developers are building.
  
-![mzansiBuilds Screenshot](./docs/screenshot.png)
- 
 ## Overview
  
 `mzansiBuilds` is a full-stack web application built with React, Vite, Express, and Supabase. It enables authenticated users to create projects, add milestones, request collaboration, and post comments while using Supabase for authentication and database storage.
  
-## Live Demo
- 
-> [Link to deployed app](#) — *(if applicable)*
- 
-## Screenshots
- 
-> *(Add screenshots or a demo GIF here)*
- 
----
  
 ## Features
  
@@ -160,7 +149,8 @@ VITE_SUPABASE_ANON_KEY=<included in repo>
 ---
  
 ## Assessment Notes
- 
+
+- The branches represent development history and the submission can be found in the `derivco-skills-quest` branch
 - The Supabase project was created exclusively for this assessment.
 - Auth middleware protects most endpoints using Supabase JWT verification.
 - The architecture follows a controller → service → repository pattern for separation of concerns.
