@@ -56,7 +56,7 @@ export function ProjectProvider({ children }) {
                     table: "projects",
                 },
                 (payload) => {
-                    console.log("projects event:", payload);
+                    console.log("projects event:", payload.eventType);
                     refreshProjects();
                 }
             )
@@ -72,9 +72,9 @@ export function ProjectProvider({ children }) {
                     
                     // notify the user when a request to collaborate occurs or a request to collaborate is responded to
                     if (requestResponse === "INSERT") {
-                        console.log("collaboration event: sent a collaboration", payload);
+                        console.log("collaboration event: sent a collaboration", payload.eventType);
                     } else if (requestResponse === "UPDATE") {
-                        console.log("collaboration event: request updated", payload);
+                        console.log("collaboration event: request updated", payload.eventType);
                         const newStatus = payload.new?.status;
                         if (newStatus === "ACCEPTED" || newStatus === "REJECTED") {
                             setCollaborationToast({

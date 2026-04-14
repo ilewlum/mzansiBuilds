@@ -19,7 +19,7 @@ export async function addComment(projectId, userId, body)
 
         if (!response.ok) throw new Error("Failed to add comment");
         const result = await response.json();
-        console.log("comment added:", result);
+        return result
     } catch (error) 
     {
         console.error("Error adding comment:", error);

@@ -40,7 +40,6 @@ export async function addProject(userId, title, description,support, techStack, 
  
     if (!response.ok) throw new Error("Failed to save project");
     const result = await response.json();
-    console.log("Project added:", result);
     return result;
   } catch (error) {
     console.error("Error adding project:", error);
@@ -65,7 +64,6 @@ export async function updateProject(projectId, title, description, support, tech
 
         if (!response.ok) throw new Error("Failed to update project");
         const result = await response.json();
-        console.log("project updated:", result);
         return result;
     } catch (error) 
     {

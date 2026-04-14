@@ -4,10 +4,12 @@ import { FaGoogle, FaGithub } from "react-icons/fa";
 import "./Login-page.css";
 import { handleRegistration } from '../services/user-api.js';
 import { useUser } from "../context/UserContext.jsx";
+import ForgotPasswordModal from "../components/ForgotPasswordModal.jsx";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showForgot, setShowForgot] = useState(false);
     const navigate = useNavigate();
     const { login } = useUser();
 
@@ -45,20 +47,18 @@ export default function Login() {
                     />
                 </div>
 
-                <span className="forgot">forgot?</span>
+                <span className="forgot" onClick={() => setShowForgot(true)}>forgot?</span>
 
                 <div className="btn-row">
                     <button className="btn" onClick={handleLoginClick}>Login</button>
                     <button className="btn" onClick={register}>Register</button>
                 </div>
-
-                <div className="social-divider">Sign in with</div>
-
-                <div className="social-row">
-                    <button className="social-btn"><FaGoogle /> Sign in with Google</button>
-                    <button className="social-btn"><FaGithub /> Sign in with GitHub</button>
-                </div>
             </div>
+
+            {/* Forgot password modal */}
+            {showForgot && (
+                <ForgotPasswordModal onClose={() => setShowForgot(false)} />
+            )}
         </div>
     );
 }

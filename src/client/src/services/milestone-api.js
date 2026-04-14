@@ -19,7 +19,7 @@ export async function addMilestone(projectId, title, description)
 
         if (!response.ok) throw new Error("Failed to add milestone");
         const result = await response.json();
-        console.log("milestone added:", result);
+        return result
     } catch (error) 
     {
         console.error("Error adding milestone:", error);

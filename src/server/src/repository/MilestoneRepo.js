@@ -2,7 +2,7 @@
 
 export default class MilestoneRepo{
     constructor(supabase) {
-    this.supabase = supabase; // ✅ this was removed at some point
+    this.supabase = supabase; 
   }
 
     getClient(client){

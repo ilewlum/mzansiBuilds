@@ -2,7 +2,7 @@
 
 export default class Collaboration{
     constructor(supabase) {
-    this.supabase = supabase; // ✅ this was removed at some point
+    this.supabase = supabase; 
   }
 
 
@@ -12,7 +12,6 @@ export default class Collaboration{
 
   // Adds a new collaborationRequest to the database.
     async addCollaboration( collaboration , client) {
-        console.log(collaboration, client)
         const { data, error } = await this.getClient(client)
             .from("collaborations")
             .insert([{
@@ -58,7 +57,6 @@ export default class Collaboration{
             .eq("requestingUserId", userId)
             .order("createdAt", { ascending: false });;    
         if (error) throw error;
-        console.log(data);
         return data;
     }
 

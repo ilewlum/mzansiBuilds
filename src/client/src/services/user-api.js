@@ -12,7 +12,7 @@ export async function handleRegistration(email, password) {
     return
   }
 
-  console.log('User Registered:', data)
+  return data
 }
 
 // function that handles user login
@@ -26,7 +26,7 @@ export async function handleLogin(email, password) {
     console.error(error.message)
     return
   }
-  console.log('Session:', data.session)
+  return data
 }
 
 // function that handles user logout
@@ -79,7 +79,7 @@ export async function addUserProfile(username, bio) {
     if (!response.ok) throw new Error("Failed to save profile");
 
     const result = await response.json();
-    console.log("User profile added:", result);
+    return result
   } catch (error) {
     console.error("Error adding user profile:", error);
     throw error; // re-throw so handleSave() in the modal catches it
@@ -100,4 +100,15 @@ export async function getUserProfile(userId) {
 export async function getAccessToken() {
   const { data } = await supabase.auth.getSession()
   return data.session?.access_token
+}
+
+export async function handleForgotPassword(email) {
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/reset-password`,
+  });
+
+  if (error) {
+    console.error(error.message);
+    throw error; // throw so the modal can catch and display it
+  }
 }

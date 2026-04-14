@@ -15,7 +15,7 @@ const userService = new UserService(userRepo);
 const userController = new UserController(userService);
 
 // routes
-router.post("/add", requireAuth ,userController.createUser);
+router.post("/add",userController.createUser);
 router.get("/:id",requireAuth, userController.getUserById);
 router.get("/", requireAuth ,userController.getAllUsers);
 router.put("/update/:id", requireAuth ,userController.updateUser);

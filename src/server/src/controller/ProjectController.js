@@ -15,7 +15,6 @@ export default class ProjectController{
             const newProject = Project.createProject({ userId, title, description, support ,techStack , stage, visibility, status, createdAt});
             const project = await this.projectService.createProject(newProject.toJSON(), req.supabase);
             res.status(201).json(project);
-            console.log("Controller Layer - project created:", project)
         } catch (err) {
             console.log("error:",err)
             res.status(500).json({ error: err.message });

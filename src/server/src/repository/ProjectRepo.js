@@ -50,7 +50,6 @@ export default class ProjectRepo {
             .eq("userId", userId)
             .order("createdAt", { ascending: false });
         if (error) throw error;
-        console.log( "project Repo",JSON.stringify(data, null, 2));
         return data;
     }
 

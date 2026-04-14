@@ -3,7 +3,7 @@
 export default class UserRepo {
 
   constructor(supabase) {
-    this.supabase = supabase; // ✅ this was removed at some point
+    this.supabase = supabase;
   }
 
   getClient(client){
@@ -22,8 +22,11 @@ export default class UserRepo {
             }])
         .select()
         .single();
-
-    if (error) throw error;
+    console.log(data)
+    if (error) {
+      console.log(error)
+      throw error;
+    }
     return data;
   }
 
@@ -48,7 +51,10 @@ export default class UserRepo {
         .from("users")
         .select("*");
 
-    if (error) throw error;
+    if (error) {
+      console.log(error)
+      throw error;
+    }
     return data;
   }
 
@@ -61,7 +67,10 @@ export default class UserRepo {
         .select()
         .single(); 
 
-    if (error) throw error;
+    if (error) {
+      console.log(error)
+      throw error;
+    }
     return data;
   }
 

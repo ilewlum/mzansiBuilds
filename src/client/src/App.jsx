@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, Navigate, Outlet } from "react-router-dom";
 import { UserProvider } from "./context/UserProvider.jsx";
 import { ProjectProvider } from "./context/ProjectProvider.jsx";
+import ResetPasswordPage from "./pages/ResetPasswordPage.jsx";
 import Login from "./pages/Login-page.jsx";
 import Feed from "./pages/Feed-page.jsx";
 import ProjectsPage from "./pages/Project-page.jsx";
@@ -41,6 +42,7 @@ export default function App() {
         {!hideNavbar && <Navbar />}
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/feed" element={<Feed />} />
             <Route path="/projects" element={<ProjectsPage />} />

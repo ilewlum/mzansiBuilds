@@ -1,4 +1,5 @@
 // Service layer for user-related operations, handling business logic and interactions with the UserRepository.
+import User from "../model/User.js"
 
 export default class UserService {
   constructor(userRepo) {
@@ -7,7 +8,6 @@ export default class UserService {
 
   // Creates a new user with the provided details and saves it to the repository.
   async createUser({ userId,username, email, bio }, client) {
-    console.log("Service - Creating user:", { userId, username, email, bio });
     const user = new User(userId, username, email, bio);
     const savedUser = await this.userRepo.createUser(user, client);
     return savedUser;

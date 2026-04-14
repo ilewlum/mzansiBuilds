@@ -10,7 +10,6 @@ export default class UserController{
     createUser = async (req, res) => {
         try {
             const { userId,username, email, bio } = req.body;
-            console.log("Controller - Creating user:", { userId, username, email, bio });
             const user = await this.userService.createUser({ userId, username, email, bio }, req.supabase);
             res.status(201).json(user);
         } catch (err) {

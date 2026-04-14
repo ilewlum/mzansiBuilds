@@ -113,18 +113,17 @@ export default function FeedPage() {
   // function to handle and validate a comment
   async function handlePostComment(projectId) {
     const text = commentInputs[projectId]?.trim();
-    if (!text || (userProfile.userId === localProjects.find(p => p.projectId === projectId)?.users.userId)) {
-      alert("You cannot comment on your own project!");
+    if (!text) {
       return;
     }
 
     // add comment and reset fields to ""
-    await addComment(projectId, userProfile.userId, text);
+    const result = await addComment(projectId, userProfile.userId, text);
     setCommentInputs(prev => ({ ...prev, [projectId]: "" }));
     setLocalProjects(prev => prev.map(p => {
       if (p.projectId !== projectId) return p;
       const newComment = {
-        commentId: `temp-${Date.now()}`,
+        commentId: result.commentId,
         body: text,
         users: { username: userProfile.username }
       };
