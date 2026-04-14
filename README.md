@@ -89,7 +89,15 @@ This will install all dependencies for the root, frontend, and backend, then sta
 The app will be available at:
 - **Client:** http://localhost:5173
 - **Server:** http://localhost:3000
- 
+
+The app already has an admin users setup for convinience :
+- AdminUser1 : 
+```bash
+email: mulwelifx45@gmail.com 
+password: AdminUser2
+```
+
+Alternatively register using your email and a confirmation link will be sent via email
 ### Manual Setup
  
 Alternatively, navigate to `src/client` and `src/server` in separate terminals and run:
