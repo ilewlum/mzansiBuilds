@@ -1,0 +1,30 @@
+{
+  "name": "mzansibuilds",
+  "version": "1.0.0",
+  "description": "Aplatform that helps developers to build publicly and keep up with what other developers are building.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "install:all": "npm install && cd src/client && npm install && cd ../server && npm install",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"cd src/client && npm run dev\" \"cd src/server && npm run dev\"",
+    "start": "npm run install:all && npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilewlum/mzansiBuilds.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ilewlum/mzansiBuilds/issues"
+  },
+  "homepage": "https://github.com/ilewlum/mzansiBuilds#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
